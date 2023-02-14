@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/CentraleAchat-Back-End.iml" filepath="$PROJECT_DIR$/.idea/CentraleAchat-Back-End.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Gateway/Gateway.iml" filepath="$PROJECT_DIR$/Gateway/Gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Inventory-service/Inventory-service.iml" filepath="$PROJECT_DIR$/Inventory-service/Inventory-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/donation-service/donation-service.iml" filepath="$PROJECT_DIR$/donation-service/donation-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/registery-service/registery-service.iml" filepath="$PROJECT_DIR$/registery-service/registery-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sales-service/sales-service.iml" filepath="$PROJECT_DIR$/sales-service/sales-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-service/user-service.iml" filepath="$PROJECT_DIR$/user-service/user-service.iml" />
+    </modules>
+  </component>
+</project>
