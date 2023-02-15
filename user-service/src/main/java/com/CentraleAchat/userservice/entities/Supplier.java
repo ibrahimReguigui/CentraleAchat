@@ -13,8 +13,8 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
 public class Supplier extends User {
 
     @NotEmpty(message = "Company Name is mandatory")

@@ -8,9 +8,8 @@ import javax.persistence.Entity;
 
 @Getter
 @Setter
-@Builder
 @Entity
-public class SystemAdmin extends Admin{
+public class SystemAdmin extends User{
     public SystemAdmin(){
         super.setRole(Role.SYSTEMADMIN);
     }
