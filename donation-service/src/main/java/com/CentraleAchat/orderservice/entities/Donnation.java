@@ -19,4 +19,6 @@ public class Donnation extends BaseEntity{
     private float amount;
     @ManyToOne
     private CharityAssociation charityAssociation;
+
+
 }

@@ -1,23 +1,29 @@
-package com.CentraleAchat.userservice.entities;
+package com.CentraleAchat.userservice.dto;
 
+import com.CentraleAchat.userservice.entities.Role;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@MappedSuperclass
 @Getter
 @Setter
-public class User extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Builder
+@AllArgsConstructor
+public class UserDto {
 
+    private Long id;
     @NotEmpty(message = "Firstname is mandatory")
     private String firstName;
     @NotEmpty(message = "LastName is mandatory")
@@ -32,4 +38,9 @@ public class User extends BaseEntity{
     private String image;
     @NotEmpty(message = "Phone Number is mandatory")
     private int phoneNumber;
+
+    private LocalDateTime createdAt;
+    private String createdBy;
+    private LocalDateTime updatedAt;
+    private String updatedBy;
 }

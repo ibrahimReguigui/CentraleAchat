@@ -16,5 +16,6 @@ public class Operator extends User{
     private StatusOperator statusOperator;
     public Operator(){
         super.setRole(Role.OPERATOR);
+        this.statusOperator=StatusOperator.PENDING;
     }
 }
