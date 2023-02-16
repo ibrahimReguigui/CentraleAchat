@@ -8,7 +8,9 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,4 +32,9 @@ public class Supplier extends User {
     public Supplier() {
         super.setRole(Role.SUPPLIER);
     }
+
+    @OneToMany(mappedBy = "supplier")
+    private List<Operator> operators;
+    @OneToMany(mappedBy = "supplier")
+    private List<Courier> couriers;
 }
