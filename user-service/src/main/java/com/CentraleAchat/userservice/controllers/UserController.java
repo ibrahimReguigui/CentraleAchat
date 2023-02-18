@@ -7,13 +7,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("user")
 public class UserController {
     private UserService userService;
-
+    @GetMapping("/")
+    public String index(Principal principal) {
+        return principal.getName();
+    }
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto registerUser(@Valid @RequestBody UserDto userDto) {
@@ -30,6 +34,10 @@ public class UserController {
          userService.deleteUser(idUser);
     }
 
-
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.FOUND)
+    public UserDto getUser(@RequestParam Long idUser) {
+        return userService.getUser(idUser);
+    }
 
 }
