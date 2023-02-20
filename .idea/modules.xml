@@ -6,6 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/Gateway/Gateway.iml" filepath="$PROJECT_DIR$/Gateway/Gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/Inventory-service/Inventory-service.iml" filepath="$PROJECT_DIR$/Inventory-service/Inventory-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/donation-service/donation-service.iml" filepath="$PROJECT_DIR$/donation-service/donation-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sales-service/offer-service.iml" filepath="$PROJECT_DIR$/sales-service/offer-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/donation-service/order-service.iml" filepath="$PROJECT_DIR$/donation-service/order-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/registery-service/registery-service.iml" filepath="$PROJECT_DIR$/registery-service/registery-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/sales-service/sales-service.iml" filepath="$PROJECT_DIR$/sales-service/sales-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/user-service/user-service.iml" filepath="$PROJECT_DIR$/user-service/user-service.iml" />
