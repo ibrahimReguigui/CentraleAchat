@@ -1,25 +1,28 @@
 package com.CentraleAchat.orderservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.CentraleAchat.orderservice.entities.BaseEntity;
+import com.CentraleAchat.orderservice.entities.CharityAssociation;
+import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-public class DonnationDto {
+@NoArgsConstructor
+public class DonnationDto extends BaseEntity {
 
     private Long idDonnation;
-    @NotEmpty(message = "Bill  is mandatory")
+
     private Long idBill;
-    private Long idSupplier;
-    @NotEmpty(message = "LastName is mandatory")
+
+    private Long idCompany;
+
     private float amount;
+
+    private CharityAssociation charityAssociation;
 
     private LocalDateTime createdAt;
 

@@ -1,46 +1,31 @@
 package com.CentraleAchat.orderservice.services;
 
 import com.CentraleAchat.orderservice.dto.DonnationDto;
-import com.CentraleAchat.orderservice.entities.Donnation;
 import com.CentraleAchat.orderservice.mappers.DonnationMapper;
+import com.CentraleAchat.orderservice.repositories.CharityAssociationRepository;
 import com.CentraleAchat.orderservice.repositories.DonnationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class DonnationServiceImp implements IDonnationService {
+@AllArgsConstructor
+public class DonnationServiceImp implements DonnationService {
 
-    @Autowired
+    private CharityAssociationRepository charityAssociationRepository;
     private DonnationRepository donnationRepository;
 
     @Override
-    public DonnationDto addDonnation(DonnationDto donnationdto) {
-        Donnation donnation = donnationRepository.save(DonnationMapper.mapToEntity(donnationdto));
-        return DonnationMapper.mapToDto(donnation);
+    public DonnationDto addDonnation(DonnationDto donnationDto) {
+        return DonnationMapper.mapToDto(donnationRepository.save(DonnationMapper.mapToEntity(donnationDto)));
     }
 
+    @Override
+    public void deleteDonnation(Long idDonnation) {
+        donnationRepository.delete(donnationRepository.findById(idDonnation).get());
+    }
 
-//    @Override
-//    public Donnation updateDonnation(DonnationDto donnationdto) {
-//        return donnationRepository.save(donnationdto);
-//    }
-//
-//    @Override
-//    public Donnation retrieveDonnation(Long idDonnation) {
-//        return donnationRepository.findById(idDonnation).orElse(null);
-//    }
-//
-//    @Override
-//    public List<Donnation> getAllDonnation() {
-//        return donnationRepository.findAll();
-//    }
-//
-//    @Override
-//    public void removeDonnation(Long idDonnation) {
-//        donnationRepository.deleteById(idDonnation);
-//    }
-//
-
+    @Override
+    public DonnationDto getDonnation(Long idDonnation) {
+        return DonnationMapper.mapToDto(donnationRepository.findById(idDonnation).get());
+    }
 }

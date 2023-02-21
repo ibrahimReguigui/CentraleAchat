@@ -15,10 +15,8 @@ public class Donnation extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDonnation;
     private Long idBill;
-    private Long idSupplier;
+    private Long idCompany;
     private float amount;
     @ManyToOne
     private CharityAssociation charityAssociation;
-
-
 }
