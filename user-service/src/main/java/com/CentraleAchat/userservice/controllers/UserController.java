@@ -35,7 +35,6 @@ import java.security.Principal;
 import java.util.*;
 
 @RestController
-
 @RequestMapping("user")
 @Slf4j
 public class UserController {
@@ -71,7 +70,7 @@ public class UserController {
     }
 
     @GetMapping("get")
-   @RolesAllowed({"ADMIN","admin","role_admin","CLIENT"})
+   @RolesAllowed({"ADMIN","CLIENT"})
     public String getAll(Principal principal) {
         KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         KeycloakSecurityContext keycloakSecurityContext = authentication.getAccount().getKeycloakSecurityContext();

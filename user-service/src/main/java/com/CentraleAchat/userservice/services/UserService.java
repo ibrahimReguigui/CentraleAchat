@@ -6,4 +6,5 @@ public interface UserService {
     UserDto addUser(UserDto userDto);
     void deleteUser(Long idUser);
     UserDto getUser(Long idUser);
+    String fonctionTestAPIDonnation();
 }

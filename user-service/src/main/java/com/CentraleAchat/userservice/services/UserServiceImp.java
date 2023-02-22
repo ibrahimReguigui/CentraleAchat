@@ -16,6 +16,7 @@ public class UserServiceImp implements UserService {
     private UserRepository userRepository;
     private CompanyRepository companyRepository;
     private APIInventoryService apiInventoryService;
+    private APIDonnationService apiDonnationService;
 
 
     @Override
@@ -41,5 +42,9 @@ public class UserServiceImp implements UserService {
     @Override
     public UserDto getUser(Long idUser) {
         return UserMapper.mapToDto(userRepository.findById(idUser).get());
+    }
+
+    public String fonctionTestAPIDonnation(){
+        return apiDonnationService.registerCharityAssociation();
     }
 }
