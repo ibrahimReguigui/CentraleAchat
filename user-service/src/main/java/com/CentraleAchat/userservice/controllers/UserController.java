@@ -1,12 +1,16 @@
 package com.CentraleAchat.userservice.controllers;
 
+import com.CentraleAchat.userservice.dto.CompanyDto;
 import com.CentraleAchat.userservice.dto.UserDto;
+import com.CentraleAchat.userservice.entities.Company;
 import com.CentraleAchat.userservice.entities.Role;
+import com.CentraleAchat.userservice.repositories.CompanyRepository;
 import com.CentraleAchat.userservice.services.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.Token;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
@@ -15,6 +19,7 @@ import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.admin.client.token.TokenManager;
+import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
@@ -22,6 +27,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +43,25 @@ import java.util.*;
 @RestController
 @RequestMapping("user")
 @Slf4j
+@AllArgsConstructor
 public class UserController {
-    @Autowired
+
     private UserService userService;
+
+    private final Keycloak keycloak;
+    private KeycloakConfig keycloakConfig;
+    private CompanyService companyService;
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserDto userDto) {
+        return userService.registerUserKeycloak(userDto);
+    }
+
+
+
+
+
+
+
 
 
 
@@ -56,7 +78,7 @@ public class UserController {
                 .realm("pidev")
                 .clientId("pidev")
                 .clientSecret("unvXYGjaDZZgZRgxBY2tzVFvqAYwPUFt")
-                .username("admin")
+                .username("sytemadmin")
                 .password("admin")
                 .build();
         try {
@@ -74,6 +96,7 @@ public class UserController {
     public String getAll(Principal principal) {
         KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         KeycloakSecurityContext keycloakSecurityContext = authentication.getAccount().getKeycloakSecurityContext();
+        Token token=keycloakSecurityContext.getToken();
         Set<String> roles = keycloakSecurityContext.getToken().getRealmAccess().getRoles();
         System.out.println(keycloakSecurityContext.getToken().getEmail());
         System.out.println(keycloakSecurityContext.getToken().getSubject());
@@ -115,7 +138,7 @@ public class UserController {
                 .realm("pidev")
                 .clientId("pidev")
                 .clientSecret("unvXYGjaDZZgZRgxBY2tzVFvqAYwPUFt")
-                .username("admin")
+                .username("sytemadmin")
                 .password("admin")
                 .build();
 
@@ -169,7 +192,7 @@ public class UserController {
                 .realm("pidev")
                 .clientId("pidev")
                 .clientSecret("unvXYGjaDZZgZRgxBY2tzVFvqAYwPUFt")
-                .username("admin")
+                .username("sytemadmin")
                 .password("admin")
                 .build();
 
@@ -180,23 +203,18 @@ public class UserController {
         return accessToken.toString();
     }
 
-    @PostMapping("/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto registerUser(@Valid @RequestBody UserDto userDto) {
-        return userService.addUser(userDto);
-    }
 
-    @PostMapping("/update")
-    @ResponseStatus(HttpStatus.OK)
-    public UserDto updateUser(@Valid @RequestBody UserDto userDto) {
-        return userService.addUser(userDto);
-    }
+//    @PostMapping("/update")
+//    @ResponseStatus(HttpStatus.OK)
+//    public UserDto updateUser(@Valid @RequestBody UserDto userDto) {
+//        return userService.addUser(userDto);
+//    }
 
-    @DeleteMapping("/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@RequestParam Long idUser) {
-        userService.deleteUser(idUser);
-    }
+//    @DeleteMapping("/delete")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void deleteUser(@RequestParam Long idUser) {
+//        userService.deleteUser(idUser);
+//    }
 
 
 }

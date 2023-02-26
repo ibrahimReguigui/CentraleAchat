@@ -35,8 +35,8 @@ public class Company extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private LineOfBusiness lineOfBusiness;
 
-    @OneToMany(mappedBy = "company")
-    @JsonIgnore
-    private List<User> users;
+    @ElementCollection
+    @CollectionTable(name = "idUsers")
+    private List<String> idUsers;
 
 }

@@ -20,6 +20,11 @@ public class VehiculeController {
     public VehiculeDto registerVehicule(@Valid @RequestBody VehiculeDto vehiculeDto) {
         return vehiculeServiceImp.addVehicule(vehiculeDto);
     }
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String test() {
+        return "arrived";
+    }
 
     @DeleteMapping("/deleteAllByIdSupplier")
     @ResponseStatus(HttpStatus.OK)

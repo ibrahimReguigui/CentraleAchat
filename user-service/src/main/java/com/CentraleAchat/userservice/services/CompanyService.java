@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CompanyService {
     CompanyDto addCompany(CompanyDto companyDto);
-    void deleteCompany(Long idCompany);
+ //   void deleteCompany(Long idCompany);
     CompanyDto getCompany(Long idCompany);
 }

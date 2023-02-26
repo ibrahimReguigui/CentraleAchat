@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +24,8 @@ public class CompanyDto {
     private int companyPhoneNumber;
     @NotEmpty(message = "Register Number is mandatory")
     private int companyRegisterNumber;
+
+    private List<String> idUsers;
 
     private LocalDateTime createdAt;
     private String createdBy;

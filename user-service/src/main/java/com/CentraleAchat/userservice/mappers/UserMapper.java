@@ -8,7 +8,7 @@ public class UserMapper {
     public static User mapToEntity(UserDto userDto) {
         User user = User.builder()
                 .acountStatus(userDto.getAcountStatus())
-                .company(userDto.getCompany())
+                .company(CompanyMapper.mapToEntity(userDto.getCompanyDto()))
                 .email(userDto.getEmail())
                 .firstName(userDto.getFirstName())
                 .id(userDto.getId())
@@ -27,7 +27,7 @@ public class UserMapper {
 
     public static UserDto mapToDto(User user) {
         UserDto userDto = UserDto.builder()
-                .company(user.getCompany())
+                .companyDto(CompanyMapper.mapToDto(user.getCompany()))
                 .acountStatus(user.getAcountStatus())
                 .email(user.getEmail())
                 .id(user.getId())

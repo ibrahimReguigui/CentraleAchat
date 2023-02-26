@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserDto {
 
-    private Long id;
+    private String id;
 
     @NotEmpty(message = "Firstname is mandatory")
     private String firstName;
@@ -47,7 +47,7 @@ public class UserDto {
     @Size(min = 8, message = "Valid Phone number required")
     private int phoneNumber;
 
-    private Company company;
+    private CompanyDto companyDto;
     private AcountStatus acountStatus;
     private LocalDateTime createdAt;
     private String createdBy;

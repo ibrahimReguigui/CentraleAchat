@@ -1,4 +1,4 @@
-package com.CentraleAchat.Gateway;
+package com.CentraleAchat.userservice.Security;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -52,14 +52,15 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         super.configure(http);
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/user*").hasAnyRole("ADMIN","admin","role_admin")
-//                .anyRequest().permitAll();
-//        http.csrf().disable();
-        http.authorizeRequests().anyRequest().authenticated();
-    }
 
+        http.authorizeRequests()
+                .antMatchers("/user/register")
+                .permitAll();
+
+       http.authorizeRequests()
+               .anyRequest().authenticated();
+        http.csrf().disable();
+    }
 
     @Bean
     public KeycloakSpringBootConfigResolver keycloakConfigResolver() {

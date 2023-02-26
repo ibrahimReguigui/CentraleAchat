@@ -14,10 +14,10 @@ import javax.validation.Valid;
 public class CompanyController {
     private CompanyService companyService;
 
-    @DeleteMapping("/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteCompany(@RequestParam Long idCompany) {
-        companyService.deleteCompany(idCompany);
-    }
+//    @DeleteMapping("/delete")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void deleteCompany(@RequestParam Long idCompany) {
+//        companyService.deleteCompany(idCompany);
+//    }
 
 }

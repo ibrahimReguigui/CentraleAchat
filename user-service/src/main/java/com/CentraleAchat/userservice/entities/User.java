@@ -12,14 +12,12 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Builder
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    private String id;
 
     @NotEmpty(message = "Firstname is mandatory")
     private String firstName;
@@ -44,7 +42,7 @@ public class User extends BaseEntity {
 
     @Size(min = 8, message = "Valid Phone number required")
     private int phoneNumber;
-    @ManyToOne
+
     private Company company;
 
     private AcountStatus acountStatus = AcountStatus.ENABLED;
