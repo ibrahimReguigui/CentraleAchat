@@ -1,5 +1,7 @@
 package com.CentraleAchat.userservice.controllers;
 
+import com.CentraleAchat.userservice.dto.CompanyDto;
+import com.CentraleAchat.userservice.entities.Company;
 import com.CentraleAchat.userservice.services.CompanyService;
 import com.CentraleAchat.userservice.services.UserService;
 import lombok.AllArgsConstructor;
@@ -19,5 +21,9 @@ public class CompanyController {
 //    public void deleteCompany(@RequestParam Long idCompany) {
 //        companyService.deleteCompany(idCompany);
 //    }
+    @PostMapping("/")
+    public void  addCompany(@RequestBody CompanyDto companyDto){
+        companyService.addCompany(companyDto);
+    }
 
 }

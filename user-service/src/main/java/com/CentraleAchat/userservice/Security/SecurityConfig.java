@@ -1,5 +1,6 @@
 package com.CentraleAchat.userservice.Security;
 
+import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -21,25 +22,22 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 {
-    /**
-     * Registers the KeycloakAuthenticationProvider with the authentication manager.
-     */
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+       // KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+       // auth.authenticationProvider(keycloakAuthenticationProvider);
+
+
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
 
-    /**
-     * Defines the session authentication strategy.
-     */
 
     @Bean
     @Override
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-        //        return new RegisterSessionAuthenticationStrategy(buildSessionRegistry());
+               // return new RegisterSessionAuthenticationStrategy(buildSessionRegistry());
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
@@ -52,9 +50,8 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         super.configure(http);
-
         http.authorizeRequests()
-                .antMatchers("/user/register")
+                .antMatchers("/user/auth")
                 .permitAll();
 
        http.authorizeRequests()
@@ -66,6 +63,9 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
-
+//    @Bean
+//    public KeycloakConfigResolver keycloakConfigResolver() {
+//        return new KeycloakSpringBootConfigResolver();
+//    }
 }
 

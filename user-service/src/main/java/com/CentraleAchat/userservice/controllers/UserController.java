@@ -11,10 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.Token;
+import org.keycloak.adapters.RefreshableKeycloakSecurityContext;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -24,11 +26,16 @@ import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.keycloak.representations.idm.UserSessionRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +43,23 @@ import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import org.keycloak.common.util.KeycloakUriBuilder;
+import org.keycloak.representations.AccessToken;
+import org.keycloak.util.JsonSerialization;
+
+import javax.ws.rs.core.UriBuilder;
+import java.io.IOException;
+import java.security.PublicKey;
+import java.util.Base64;
+import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -52,9 +73,37 @@ public class UserController {
     private KeycloakConfig keycloakConfig;
     private CompanyService companyService;
     @PostMapping("/register")
+    @PreAuthorize("hasAnyRole('SUPPLIER','ROLE_SUPPLIER')")
+    @RolesAllowed({"ADMIN","CLIENT","SUPPLIER"})
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserDto userDto) {
         return userService.registerUserKeycloak(userDto);
     }
+    @GetMapping("/deleteAllUsersExeptAdmin")
+    public ResponseEntity<String> deleteAllUsersExeptAdmin() {
+         userService.deleteAllUsersExeptAdmin();
+        return ResponseEntity.status(HttpStatus.GONE).body("DELETED");
+    }
+    @GetMapping("/logout")
+    @PreAuthorize("hasAnyRole('SUPPLIER','ROLE_SUPPLIER')")
+    @RolesAllowed({"ADMIN","CLIENT","SUPPLIER"})
+    public ResponseEntity<String> logout(@Context HttpServletRequest request,
+                                         @AuthenticationPrincipal KeycloakAuthenticationToken authenticationToken) {
+        keycloak.realm("pidev").users().get(keycloakConfig.whoAmI().getSubject()).logout();
+        request.getSession().invalidate();
+
+        return ResponseEntity.status(HttpStatus.GONE).body("Bye");
+    }
+//    @PostMapping("/login")
+//    public String authenticate(@RequestParam String username,@RequestParam String password) throws IOException {
+//        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+//        Authentication authentication = authenticationManager.authenticate(token);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        AccessToken accessToken = keycloakConfig.whoAmI();
+//        return accessToken.toString();
+//
+//    }
+
 
 
 
@@ -92,7 +141,7 @@ public class UserController {
     }
 
     @GetMapping("get")
-   @RolesAllowed({"ADMIN","CLIENT"})
+    @RolesAllowed({"SUPPLIER"})
     public String getAll(Principal principal) {
         KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         KeycloakSecurityContext keycloakSecurityContext = authentication.getAccount().getKeycloakSecurityContext();
@@ -105,6 +154,7 @@ public class UserController {
         System.out.println(keycloakSecurityContext.getToken().getAuthorization());
         System.out.println(roles.toString());
         System.out.println(principal.getName());
+        System.out.println(keycloakSecurityContext.getToken().isVerifyCaller());
         if (roles.contains("admin")) {
             return "User has the correct role";
         } else {
@@ -184,7 +234,7 @@ public class UserController {
         return createdUserId;
     }
     @GetMapping("auth")
-    public String auth() {
+    public String auth(@RequestParam String username,@RequestParam String password) {
 
 
         Keycloak keycloak = KeycloakBuilder.builder()
@@ -192,8 +242,8 @@ public class UserController {
                 .realm("pidev")
                 .clientId("pidev")
                 .clientSecret("unvXYGjaDZZgZRgxBY2tzVFvqAYwPUFt")
-                .username("sytemadmin")
-                .password("admin")
+                .username(username)
+                .password(password)
                 .build();
 
         TokenManager tokenManager = keycloak.tokenManager();

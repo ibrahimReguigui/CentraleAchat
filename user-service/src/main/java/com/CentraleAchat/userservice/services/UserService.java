@@ -4,11 +4,15 @@ import com.CentraleAchat.userservice.dto.UserDto;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
-//    UserDto addUser(UserDto userDto);
+    //    UserDto addUser(UserDto userDto);
 //    void deleteUser(Long idUser);
 //    UserDto getUser(Long idUser);
     String fonctionTestAPIDonnation();
 
+    void deleteAllUsersExeptAdmin();
+    void whoAmI();
+
     ResponseEntity<String> registerUserKeycloak(UserDto userDto);
-    Boolean userExistByEmailKeycloak(String email) ;
+
+    Boolean userExistByEmailKeycloak(String email);
 }

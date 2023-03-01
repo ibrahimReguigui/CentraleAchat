@@ -20,13 +20,18 @@ public class KeycloakConfig {
                 .realm("pidev")
                 .clientId("pidev")
                 .clientSecret("pvs3oudngIxtojOSiITvfcU2QTn7cgkr")
-                .username("sytemadmin")
-                .password("admin")
+                .username("systemadmin")
+                .password("systemadmin")
                 .build();
     }
     public  AccessToken getAccessToken() {
         KeycloakSecurityContext context = (KeycloakSecurityContext) SecurityContextHolder.getContext().getAuthentication().getCredentials();
         return context.getToken();
+    }
+    public AccessToken whoAmI() {
+        KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        AccessToken accessToken = authentication.getAccount().getKeycloakSecurityContext().getToken();
+        return accessToken;
     }
 }
 
