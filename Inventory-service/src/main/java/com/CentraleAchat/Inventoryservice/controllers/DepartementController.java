@@ -1,7 +1,8 @@
-package com.CentraleAchat.Inventoryservice.Controllers;
-import com.CentraleAchat.Inventoryservice.Services.DepartementService;
+package com.CentraleAchat.Inventoryservice.controllers;
+import com.CentraleAchat.Inventoryservice.services.DepartementService;
 import com.CentraleAchat.Inventoryservice.dto.CategorieDto;
 import com.CentraleAchat.Inventoryservice.dto.DepartementDto;
+import com.CentraleAchat.Inventoryservice.services.DepartementService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class DepartementController {
     DepartementService departementService;
 
-    @PostMapping("/add")
-    public DepartementDto createDepartement(@RequestBody DepartementDto departementDto) {
-        return departementService.createDepartement(departementDto);
+    @PostMapping("/add/{idLocation}")
+    public DepartementDto createDepartementAffecterALocation(@RequestBody DepartementDto departementDto,@PathVariable Long idLocation){
+    return departementService.createDepartementAffecterALocation(departementDto,idLocation);
     }
 
     @PutMapping("/update")

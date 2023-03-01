@@ -1,9 +1,10 @@
-package com.CentraleAchat.Inventoryservice.Services;
+package com.CentraleAchat.Inventoryservice.services;
 
 import com.CentraleAchat.Inventoryservice.dto.LocationDto;
 import com.CentraleAchat.Inventoryservice.dto.ProductDto;
+import com.CentraleAchat.Inventoryservice.entities.Location;
 
 public interface LocationService {
- LocationDto createLocation(LocationDto locationDto);
-    LocationDto updateLocation(LocationDto locationDto);
+ Location createLocation(Location location);
+    Location updateLocation(Location location,Long idLocation);
 }

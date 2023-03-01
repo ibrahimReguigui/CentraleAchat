@@ -8,9 +8,9 @@ public class LocationMapper {
     public static Location mapToEntity (LocationDto locationDto){
         Location location = Location.builder().build();
         location.setIdLocation(locationDto.getIdLocation());
-        location.setName(locationDto.getName());
+        location.setNameLocation(locationDto.getNameLocation());
         location.setAdress(locationDto.getAdress());
-        location.setCapacity(locationDto.getCapacity());
+        location.setCapacityLocation(locationDto.getCapacityLocation());
         location.setIdSupplier(locationDto.getIdSupplier());
         location.setLocationType(locationDto.getLocationType());
         return location ;
@@ -20,10 +20,10 @@ public class LocationMapper {
         LocationDto locationDto =LocationDto.builder()
                 .idLocation(location.getIdLocation())
                 .adress(location.getAdress())
-                .name(location.getName())
+                .nameLocation(location.getNameLocation())
                 .locationType(location.getLocationType())
                 .idSupplier(location.getIdSupplier())
-                .capacity(location.getCapacity())
+                .capacityLocation(location.getCapacityLocation())
                 .createdAt(location.getCreatedAt())
                 .createdBy(location.getCreatedBy())
                 .updatedAt(location.getUpdatedAt())

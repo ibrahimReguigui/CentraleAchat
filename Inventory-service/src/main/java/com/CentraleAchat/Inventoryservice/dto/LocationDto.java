@@ -15,10 +15,14 @@ import java.time.LocalDateTime;
 public class LocationDto {
     private Long idLocation;
     private Long idSupplier;
-    private String name;
+    private String nameLocation;
     private String adress;
-    private float capacity;
+    private float capacityLocation;
     private LocationType locationType;
+
+    private Long idDepartement;
+    private String nameDepartment;
+    private float capacityDepartment;
 
     private LocalDateTime createdAt;
     private String createdBy;

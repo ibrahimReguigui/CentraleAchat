@@ -18,9 +18,19 @@ public class ProductDto {
     private int quantity;
     private String image;
     private float unitPriceHT;
+    private String nameCategorie;
 
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
+    private Long idCategorie;
+
+    public ProductDto(Long idProduct, String name, String description, float unitPriceHT, Long idCategorie) {
+        this.idProduct = idProduct;
+        this.name = name;
+        this.description = description;
+        this.unitPriceHT = unitPriceHT;
+        this.idCategorie = idCategorie;
+    }
 }

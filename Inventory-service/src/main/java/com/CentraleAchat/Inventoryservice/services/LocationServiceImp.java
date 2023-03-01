@@ -1,28 +1,33 @@
-package com.CentraleAchat.Inventoryservice.Services;
+package com.CentraleAchat.Inventoryservice.services;
 
 import com.CentraleAchat.Inventoryservice.dto.LocationDto;
+
 import com.CentraleAchat.Inventoryservice.entities.Location;
 import com.CentraleAchat.Inventoryservice.mappers.LocationMapper;
 import com.CentraleAchat.Inventoryservice.repositories.LocationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @AllArgsConstructor
-public class LocationServiceImp implements LocationService{
+public class LocationServiceImp implements LocationService {
     LocationRepository locationRepository;
 
-    @Override
-    public LocationDto createLocation(LocationDto locationDto) {
-        Location location =locationRepository.save(LocationMapper.mapToEntity(locationDto));
-
-        return LocationMapper.mapToDo(location);
+    @Transactional
+    public Location createLocation(Location location) {
+        return locationRepository.save(location);
     }
 
     @Override
-    public LocationDto updateLocation(LocationDto locationDto) {
-        Location location =locationRepository.save(LocationMapper.mapToEntity(locationDto));
+    public Location updateLocation(Location location,Long idLocation) {
 
-        return LocationMapper.mapToDo(location);
+
+        return locationRepository.findById(idLocation).map(location1 ->{
+            location1.setNameLocation(location.getNameLocation());
+            location1.setCapacityLocation(location.getCapacityLocation());
+            location1.setLocationType(location.getLocationType());
+        return locationRepository.save(location1); } ).orElseThrow(()->new RuntimeException("Location non disponible"));
         }
 }

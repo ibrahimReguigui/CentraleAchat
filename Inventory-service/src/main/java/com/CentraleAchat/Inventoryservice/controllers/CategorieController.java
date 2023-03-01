@@ -1,7 +1,10 @@
-package com.CentraleAchat.Inventoryservice.Controllers;
+package com.CentraleAchat.Inventoryservice.controllers;
 
-import com.CentraleAchat.Inventoryservice.Services.CategorieService;
+
 import com.CentraleAchat.Inventoryservice.dto.CategorieDto;
+import com.CentraleAchat.Inventoryservice.entities.Categorie;
+import com.CentraleAchat.Inventoryservice.repositories.CategorieRepository;
+import com.CentraleAchat.Inventoryservice.services.CategorieService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,23 +16,24 @@ public class CategorieController {
 
 
     CategorieService categorieService;
+    private final CategorieRepository categorieRepository;
+
     @PostMapping("/add")
-    public CategorieDto createCategorie(@RequestBody CategorieDto categorieDto)
+    public Categorie createCategorie(@RequestBody Categorie categorie)
     {
-      return  categorieService.createCategorie(categorieDto);
+      return  categorieService.createCategorie(categorie);
 
     }
-    @PutMapping("/update")
-    public CategorieDto updateCategorie(@RequestBody CategorieDto categorieDto) {
+    @PutMapping("/update/{idCategorie}")
+    public Categorie updateCategorie(@RequestBody Categorie categorie,@PathVariable Long idCategorie) {
 
-        return  categorieService.createCategorie(categorieDto);
+        return  categorieService.updateCategorie(categorie,idCategorie);
     }
-   // @DeleteMapping("/{id}")
-    //public ResponseEntity<?> deleteCategorie(@PathVariable(value = "id") Long categorieId) {
-      //  Categorie categorie = CategorieRepositry.findById(categorieId)
-        //        .orElseThrow(() -> new ResourceNotFoundException("Categorie", "id", categorieId));
-        //CategorieRepositry.delete(categorie);
-        //return ResponseEntity.ok().build();
+    @DeleteMapping("/delete/{idCategorie}")
+    public void  deleteCategorie(@PathVariable Long idCategorie) {
+        categorieService.deleteCategorie(idCategorie);
     }
+    }
+
 
 

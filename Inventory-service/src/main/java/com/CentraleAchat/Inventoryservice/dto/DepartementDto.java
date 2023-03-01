@@ -1,5 +1,6 @@
 package com.CentraleAchat.Inventoryservice.dto;
 
+import com.CentraleAchat.Inventoryservice.entities.LocationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +14,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DepartementDto {
     private Long idDepartement;
-    private String name;
-    private float capacity;
+    private String nameDepartment;
+    private float capacityDepartment;
+    private Long idLocation;
+    private Long idSupplier;
+    private String nameLocation;
+    private String adress;
+    private float capacityLocation;
+    private LocationType locationType;
 
     private LocalDateTime createdAt;
     private String createdBy;

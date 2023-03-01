@@ -1,8 +1,11 @@
-package com.CentraleAchat.Inventoryservice.Services;
+package com.CentraleAchat.Inventoryservice.services;
 
 
 import com.CentraleAchat.Inventoryservice.dto.UnitDto;
+import com.CentraleAchat.Inventoryservice.entities.Unit;
 
 public interface UnitService {
-    UnitDto createUnit (UnitDto unitDto);
+    Unit createUnit(Unit unit);
+    Unit updateUnit(Unit unit,Long idUnit);
+    void deleteUnit(Long idUnit);
 }

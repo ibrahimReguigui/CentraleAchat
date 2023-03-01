@@ -1,4 +1,4 @@
-package com.CentraleAchat.Inventoryservice.Services;
+package com.CentraleAchat.Inventoryservice.services;
 
 import com.CentraleAchat.Inventoryservice.dto.UnitDto;
 import com.CentraleAchat.Inventoryservice.entities.Unit;
@@ -13,8 +13,18 @@ public class UnitServiceImp implements UnitService{
 UnitRepository unitRepositry;
 
     @Override
-    public UnitDto createUnit(UnitDto unitDto) {
-        Unit unit =unitRepositry.save(UnitMapper.mapToEntity(unitDto));
-    return UnitMapper.mapToDo(unit);
+    public Unit createUnit(Unit unit) {
+    return    unitRepositry.save(unit);
+
+    }
+    public Unit updateUnit(Unit unit,Long idUnit){
+        return unitRepositry.findById(idUnit).map(unit1 ->{
+            unit1.setName(unit.getName());
+            unit1.setDescription(unit.getDescription());
+            return unitRepositry.save(unit1);
+        }).orElseThrow(()->new RuntimeException("Unit non trouvee"));
+    }
+    public void deleteUnit(Long idUnit){
+        unitRepositry.deleteById(idUnit);
     }
 }

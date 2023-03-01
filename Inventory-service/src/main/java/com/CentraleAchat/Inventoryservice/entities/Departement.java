@@ -1,5 +1,6 @@
 package com.CentraleAchat.Inventoryservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,10 +16,11 @@ public class Departement extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDepartement;
-    private String name;
-    private float capacity;
+    private String nameDepartment;
+    private float capacityDepartment;
     @ManyToOne
     private Location location;
-    @ManyToMany
+    @JsonIgnore
+    @OneToMany (mappedBy = "departement")
     private List<Product> products;
 }

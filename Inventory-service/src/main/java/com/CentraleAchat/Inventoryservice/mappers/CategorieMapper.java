@@ -7,7 +7,7 @@ public class CategorieMapper {
     public static Categorie mapToEntity(CategorieDto categorieDto) {
         Categorie categorie = Categorie.builder().build();
         categorie.setIdCategorie(categorieDto.getIdCategorie());
-        categorie.setName(categorieDto.getName());
+        categorie.setNameCategorie(categorieDto.getName());
         categorie.setCreatedAt(categorieDto.getCreatedAt());
         categorie.setCreatedBy(categorieDto.getCreatedBy());
         categorie.setUpdatedBy(categorieDto.getUpdatedBy());
@@ -18,7 +18,7 @@ public class CategorieMapper {
     }
 public static CategorieDto mapToDo (Categorie categorie){
         CategorieDto categorieDto = CategorieDto.builder()
-                .name(categorie.getName())
+                .name(categorie.getNameCategorie())
                 .idCategorie(categorie.getIdCategorie())
                 .createdAt(categorie.getCreatedAt())
                 .createdBy(categorie.getCreatedBy())
