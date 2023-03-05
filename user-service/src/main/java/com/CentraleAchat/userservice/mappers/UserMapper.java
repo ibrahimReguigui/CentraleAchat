@@ -4,7 +4,9 @@ package com.CentraleAchat.userservice.mappers;
 import com.CentraleAchat.userservice.dto.UserDto;
 import com.CentraleAchat.userservice.entities.User;
 
+
 public class UserMapper {
+
     public static User mapToEntity(UserDto userDto) {
         User user = User.builder()
                 .acountStatus(userDto.getAcountStatus())
@@ -16,6 +18,9 @@ public class UserMapper {
                 .lastName(userDto.getLastName())
                 .password(userDto.getPassword())
                 .phoneNumber(userDto.getPhoneNumber())
+                .adresse(userDto.getAdresse())
+                .statusLivreur(userDto.getStatusLivreur())
+                .gouvernorat(userDto.getGouvernorat())
                 .role(userDto.getRole())
                 .build();
         user.setCreatedAt(userDto.getCreatedAt());
@@ -37,6 +42,8 @@ public class UserMapper {
                 .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
+                .statusLivreur(user.getStatusLivreur())
+                .gouvernorat(user.getGouvernorat())
                 .createdAt(user.getCreatedAt())
                 .createdBy(user.getCreatedBy())
                 .updatedAt(user.getUpdatedAt())
@@ -44,4 +51,5 @@ public class UserMapper {
                 .build();
         return userDto;
     }
+
 }

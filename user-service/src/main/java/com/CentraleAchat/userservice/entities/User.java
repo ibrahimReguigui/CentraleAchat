@@ -54,13 +54,18 @@ public class User extends BaseEntity {
     @Temporal(TemporalType.DATE)
     Date dateAdhesion;
 
-    @NotEmpty(message="Gouvernorat is Mandatory" )
-    private String  gouvernorat ;
+   // @NotEmpty(message="Gouvernorat is Mandatory" )
+
+
+
+   // private String Username;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     StatusLivreur statusLivreur = StatusLivreur.Actif;
-
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    Gouvernorat  gouvernorat = Gouvernorat.Ariana;
     @ManyToOne
     private Company company;
 

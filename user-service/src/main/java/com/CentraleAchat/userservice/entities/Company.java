@@ -39,4 +39,5 @@ public class Company extends BaseEntity {
     @JsonIgnore
     private List<User> users;
 
+
 }

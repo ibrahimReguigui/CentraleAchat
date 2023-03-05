@@ -1,9 +1,6 @@
 package com.CentraleAchat.userservice.dto;
 
-import com.CentraleAchat.userservice.entities.AcountStatus;
-import com.CentraleAchat.userservice.entities.Company;
-import com.CentraleAchat.userservice.entities.Role;
-import com.CentraleAchat.userservice.entities.StatusLivreur;
+import com.CentraleAchat.userservice.entities.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,20 +24,20 @@ public class UserDto {
 
     private Long id;
 
-    @NotEmpty(message = "Firstname is mandatory")
+   // @NotEmpty(message = "Firstname is mandatory")
     private String firstName;
 
-    @NotEmpty(message = "LastName is mandatory")
+  //  @NotEmpty(message = "LastName is mandatory")
     private String lastName;
 
     @Email(message = "Valid Email required")
-    @NotEmpty(message = "Email is mandatory")
+   // @NotEmpty(message = "Email is mandatory")
     private String email;
 
     @Size(min = 7, message = "Password must have a minimum of 7 characters")
     private String password;
 
-    @NotEmpty
+   // @NotEmpty
     private Role role;
 
     @Lob
@@ -59,13 +56,15 @@ public class UserDto {
     @Temporal(TemporalType.DATE)
     Date dateAdhesion;
 
-    @NotEmpty(message="Gouvernorat is Mandatory" )
-    private String  gouvernorat ;
+    //@NotEmpty(message="Gouvernorat is Mandatory" )
+
+
+  //  private String Username;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     StatusLivreur statusLivreur = StatusLivreur.Actif;
-
+    Gouvernorat gouvernorat =  Gouvernorat.Ariana;
 
     private Company company;
     private AcountStatus acountStatus;
@@ -73,4 +72,7 @@ public class UserDto {
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
+
+
+
 }

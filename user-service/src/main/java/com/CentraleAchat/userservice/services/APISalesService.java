@@ -6,8 +6,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient("INVENTORY-SERVICE")
-public interface APIInventoryService {
+@FeignClient("SALES-SERVICE")
+public interface APISalesService {
 
     @DeleteMapping("/vehicule/deleteAllByIdSupplier")
     @ResponseStatus(HttpStatus.OK)
