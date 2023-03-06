@@ -1,5 +1,6 @@
 package com.CentraleAchat.offerservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class OrderLine extends BaseEntity{
     private Long idOrderLine;
     private Long idProduct;
     private int quantity;
+    @JsonIgnore
     @ManyToOne
     private Order order;
 }

@@ -1,33 +1,42 @@
 package com.CentraleAchat.userservice.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @Entity
-public class Supplier extends User {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Company extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idCompany;
 
     @NotEmpty(message = "Company Name is mandatory")
     private String companyName;
+
     @Lob
     @Column(columnDefinition = "BLOB")
     private String logo;
+
     @NotEmpty(message = "Phone Number is mandatory")
     private int companyPhoneNumber;
+
     @NotEmpty(message = "Register Number is mandatory")
     private int companyRegisterNumber;
 
-    public Supplier() {
-        super.setRole(Role.SUPPLIER);
-    }
+    @NotEmpty
+    @Enumerated(EnumType.STRING)
+    private LineOfBusiness lineOfBusiness;
+
+    @OneToMany(mappedBy = "company")
+    @JsonIgnore
+    private List<User> users;
+
 }

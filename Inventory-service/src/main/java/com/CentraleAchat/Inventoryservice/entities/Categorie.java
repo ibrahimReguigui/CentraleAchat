@@ -17,5 +17,5 @@ public class Categorie extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCategorie;
-    private String name;
+    private String nameCategorie;
 }

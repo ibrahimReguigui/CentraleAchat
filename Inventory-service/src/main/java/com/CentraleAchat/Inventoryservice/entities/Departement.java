@@ -1,5 +1,6 @@
 package com.CentraleAchat.Inventoryservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Departement extends BaseEntity{
     private float capacity;
     @ManyToOne
     private Location location;
-    @ManyToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "departement")
     private List<Product> products;
 }

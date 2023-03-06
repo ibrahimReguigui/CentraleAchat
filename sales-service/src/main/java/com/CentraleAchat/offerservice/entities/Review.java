@@ -1,4 +1,4 @@
-package com.CentraleAchat.userservice.entities;
+package com.CentraleAchat.offerservice.entities;
 
 import lombok.*;
 

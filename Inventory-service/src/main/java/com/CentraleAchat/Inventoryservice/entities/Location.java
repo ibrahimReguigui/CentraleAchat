@@ -20,6 +20,6 @@ public class Location extends BaseEntity{
     private String adress;
     private float capacity;
     private LocationType locationType;
-    @OneToMany
+    @OneToMany(mappedBy = "location")
     private List<Departement> departementList;
 }
