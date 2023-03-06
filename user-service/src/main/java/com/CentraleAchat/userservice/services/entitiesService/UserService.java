@@ -15,7 +15,8 @@ public interface UserService {
 //    void whoAmI();
 //
     String registerSupplierClient(UserDto userDto);
-    UserRepresentation updateUser(UserDto userDto);
+    UserRepresentation updateProfile(UserDto userDto);
+    UserRepresentation updateEmployee(UserDto userDto,String employeeId);
     Boolean userExistByEmailKeycloak(String email);
     String registerOperatorCourier(UserDto userDto);
     void updatePassword(String newPassword);

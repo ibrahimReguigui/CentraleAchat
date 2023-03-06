@@ -46,10 +46,13 @@ public class UserController {
     }
 
     @PutMapping("/updateProfile")
-    public ResponseEntity updateUser(@Valid @RequestBody UserDto userDto,@RequestParam(required = false) Long iduser) {
-        if (iduser!=null)
-            System.out.println(iduser);
-        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userDto));
+    public ResponseEntity updateProfile(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateProfile(userDto));
+    }
+
+    @PutMapping("/updateEmployee")
+    public ResponseEntity updateEmployee(@Valid @RequestBody UserDto userDto,@RequestParam String idEmployee) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateEmployee(userDto,idEmployee));
     }
 
     @PutMapping("/updatePassword")

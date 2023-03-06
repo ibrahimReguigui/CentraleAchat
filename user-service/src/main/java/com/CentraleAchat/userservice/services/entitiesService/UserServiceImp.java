@@ -13,6 +13,7 @@ import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
+
 import java.time.Duration;
 
 import org.keycloak.representations.idm.*;
@@ -169,28 +170,36 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserRepresentation updateUser(UserDto userDto) {
-
+    public UserRepresentation updateProfile(UserDto userDto) {
 
         UserResource userResource = keycloak.realm("pidev").users().get(keycloakService.whoAmI().getSubject());
-        System.out.println(keycloakService.whoAmI().getSubject());
-        Map<String, List<String>> attributes = new HashMap<>();
-        attributes.put("image", Arrays.asList((userDto.getImage() != null ? userDto.getImage() : "defaultImage")));
-
         UserRepresentation updatedUser = userResource.toRepresentation();
-        if (userDto.getFirstName() != null)
-            updatedUser.setFirstName(userDto.getFirstName());
-        if (userDto.getFirstName() != null)
-            updatedUser.setLastName(userDto.getLastName());
-        if (userDto.getImage()!=null)
-            updatedUser.getAttributes().put("image", Arrays.asList((userDto.getImage()!=null?userDto.getImage():"defaultImage")));
-
+        updatedUser.setFirstName(userDto.getFirstName());
+        updatedUser.setLastName(userDto.getLastName());
+        updatedUser.getAttributes().put("image", Arrays.asList((userDto.getImage() != null ? userDto.getImage() :
+                updatedUser.getAttributes().get("image").get(0))));
+        updatedUser.getAttributes().put("phoneNumber", Arrays.asList((userDto.getImage() != null ? String.valueOf(userDto.getPhoneNumber()) :
+                updatedUser.getAttributes().get("phoneNumber").get(0))));
         userResource.update(updatedUser);
 
         return updatedUser;
     }
 
-   // @Scheduled(fixedRate = 60000)
+    @Override
+    public UserRepresentation updateEmployee(UserDto userDto ,String employeeId) {
+        UserResource userResource = keycloak.realm("pidev").users().get(employeeId);
+        UserRepresentation updatedUser = userResource.toRepresentation();
+        updatedUser.setFirstName(userDto.getFirstName());
+        updatedUser.setLastName(userDto.getLastName());
+        updatedUser.getAttributes().put("image", Arrays.asList((userDto.getImage() != null ? userDto.getImage() :
+                updatedUser.getAttributes().get("image").get(0))));
+        updatedUser.getAttributes().put("phoneNumber", Arrays.asList((userDto.getImage() != null ? String.valueOf(userDto.getPhoneNumber()) :
+                updatedUser.getAttributes().get("phoneNumber").get(0))));
+        userResource.update(updatedUser);
+        return null;
+    }
+
+    // @Scheduled(fixedRate = 60000)
     public void userIdsWithErrorCountGreaterThan3() {
         log.info("userIdsWithErrorCountGreaterThan3 started");
         //GET EVENTS LIST
@@ -258,27 +267,27 @@ public class UserServiceImp implements UserService {
             List<UserSessionRepresentation> sessions = keycloak.realm("pidev").users().get(user.getId()).getUserSessions();
             System.out.println(sessions.size());
             long totalSessionDuration = 0;
-                for (UserSessionRepresentation session : sessions) {
-                    Instant start = Instant.ofEpochSecond(session.getStart());
-                    Instant lastAccess = Instant.ofEpochSecond(session.getLastAccess());
-                    Duration sessionDuration = Duration.between(start, lastAccess);
-                    totalSessionDuration += sessionDuration.getSeconds();
+            for (UserSessionRepresentation session : sessions) {
+                Instant start = Instant.ofEpochSecond(session.getStart());
+                Instant lastAccess = Instant.ofEpochSecond(session.getLastAccess());
+                Duration sessionDuration = Duration.between(start, lastAccess);
+                totalSessionDuration += sessionDuration.getSeconds();
 
-                }
-
-                totalSessionDuration/=1000;
-                long days = totalSessionDuration / (24 * 3600);
-                totalSessionDuration %= (24 * 3600);
-
-                long hours = totalSessionDuration / 3600;
-                totalSessionDuration %= 3600;
-
-                long minutes = totalSessionDuration / 60;
-                totalSessionDuration %= 60;
-
-                String durationString = String.format("%dd %dh %dm %ds", days, hours, minutes, totalSessionDuration);
-
-                System.out.println("User: " + user.getUsername() + " - Session duration: " + durationString);
             }
+
+            totalSessionDuration /= 1000;
+            long days = totalSessionDuration / (24 * 3600);
+            totalSessionDuration %= (24 * 3600);
+
+            long hours = totalSessionDuration / 3600;
+            totalSessionDuration %= 3600;
+
+            long minutes = totalSessionDuration / 60;
+            totalSessionDuration %= 60;
+
+            String durationString = String.format("%dd %dh %dm %ds", days, hours, minutes, totalSessionDuration);
+
+            System.out.println("User: " + user.getUsername() + " - Session duration: " + durationString);
+        }
     }
 }
