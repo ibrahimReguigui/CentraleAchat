@@ -18,12 +18,14 @@ public class Product extends BaseEntity{
     private String name;
     private String description;
     private int quantity;
-    @ManyToOne
-    private Unit unit;
+
+
     private String image;
     private float unitPriceHT;
     @ManyToOne
     private Categorie categorie;
-    @ManyToMany
-    private List<Departement> departements;
+    @ManyToOne
+    private Departement departement;
+    @ManyToOne
+    private Unit unit;
 }
