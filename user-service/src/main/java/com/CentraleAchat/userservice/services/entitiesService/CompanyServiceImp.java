@@ -1,4 +1,4 @@
-package com.CentraleAchat.userservice.services;
+package com.CentraleAchat.userservice.services.entitiesService;
 
 import com.CentraleAchat.userservice.dto.CompanyDto;
 import com.CentraleAchat.userservice.entities.Company;
@@ -6,7 +6,6 @@ import com.CentraleAchat.userservice.mappers.CompanyMapper;
 import com.CentraleAchat.userservice.repositories.CompanyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor

@@ -12,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -35,6 +36,7 @@ public class UserDto {
     private String email;
 
     @Size(min = 7, message = "Password must have a minimum of 7 characters")
+    @Null
     private String password;
 
     @NotEmpty

@@ -1,4 +1,4 @@
-package com.CentraleAchat.userservice.services;
+package com.CentraleAchat.userservice.services.entitiesService;
 
 import com.CentraleAchat.userservice.dto.CompanyDto;
 

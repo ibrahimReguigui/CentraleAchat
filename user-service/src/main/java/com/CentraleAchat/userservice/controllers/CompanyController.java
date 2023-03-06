@@ -1,14 +1,9 @@
 package com.CentraleAchat.userservice.controllers;
 
 import com.CentraleAchat.userservice.dto.CompanyDto;
-import com.CentraleAchat.userservice.entities.Company;
-import com.CentraleAchat.userservice.services.CompanyService;
-import com.CentraleAchat.userservice.services.UserService;
+import com.CentraleAchat.userservice.services.entitiesService.CompanyService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
