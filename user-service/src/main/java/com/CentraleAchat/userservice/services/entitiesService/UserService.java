@@ -20,5 +20,6 @@ public interface UserService {
     Boolean userExistByEmailKeycloak(String email);
     String registerOperatorCourier(UserDto userDto);
     void updatePassword(String newPassword);
+    String getNumeroClient(String idClient);
 
 }

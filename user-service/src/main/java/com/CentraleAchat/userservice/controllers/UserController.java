@@ -79,4 +79,8 @@ public class UserController {
         request.getSession().invalidate();
         return ResponseEntity.status(HttpStatus.GONE).body("Bye");
     }
+    @GetMapping("/getNumeroClient/{idClient}")
+    public String getNumeroClient(@PathVariable String idClient) {
+        return userService.getNumeroClient(idClient);
+    }
 }

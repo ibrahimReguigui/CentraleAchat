@@ -2,9 +2,7 @@ package com.CentraleAchat.userservice.mappers;
 
 
 import com.CentraleAchat.userservice.dto.CompanyDto;
-import com.CentraleAchat.userservice.dto.UserDto;
 import com.CentraleAchat.userservice.entities.Company;
-import com.CentraleAchat.userservice.entities.User;
 
 public class CompanyMapper {
     public static Company mapToEntity(CompanyDto companyDto) {

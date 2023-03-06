@@ -36,6 +36,20 @@ public class UserServiceImp implements UserService {
     private APIInventoryService apiInventoryService;
     private APIDonnationService apiDonnationService;
 
+
+    //NadhirStart
+
+    @Override
+    public String getNumeroClient(String idClient) {
+        UserResource userResource = keycloak.realm("pidev").users().get(String.valueOf(idClient));
+        UserRepresentation updatedUser = userResource.toRepresentation();
+
+        return updatedUser.getAttributes().get("phoneNumber").get(0);
+    }
+
+    //NadhirEnd
+
+
     @Override
     public Boolean userExistByEmailKeycloak(String email) {
 
