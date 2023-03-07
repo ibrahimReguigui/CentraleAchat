@@ -1,8 +1,6 @@
-package com.CentraleAchat.offerservice.controlles;
+package com.CentraleAchat.offerservice.controllers;
 
-import com.CentraleAchat.offerservice.dto.OrderDTO;
 import com.CentraleAchat.offerservice.entities.Order;
-import com.CentraleAchat.offerservice.entities.OrderLine;
 import com.CentraleAchat.offerservice.services.APIUserService;
 import com.CentraleAchat.offerservice.services.OrderService;
 import com.CentraleAchat.offerservice.services.OrderServiceImp;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor

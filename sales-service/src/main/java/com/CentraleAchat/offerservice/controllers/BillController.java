@@ -1,4 +1,4 @@
-package com.CentraleAchat.offerservice.controlles;
+package com.CentraleAchat.offerservice.controllers;
 
 import com.CentraleAchat.offerservice.dto.BillDTO;
 import com.CentraleAchat.offerservice.entities.Bill;

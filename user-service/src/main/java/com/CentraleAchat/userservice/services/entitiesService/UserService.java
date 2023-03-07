@@ -22,4 +22,6 @@ public interface UserService {
     void updatePassword(String newPassword);
     String getNumeroClient(String idClient);
 
+    Boolean deactivateActivateAccount(String idUser);
+
 }

@@ -34,4 +34,9 @@ public class BillServiceImp implements BillService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Bill getBillByCode(Long codeBill) {
+        return billRepository.findById(codeBill).get();
+    }
+
 }

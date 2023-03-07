@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.core.Context;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -27,6 +32,14 @@ public class UserController {
     private UserService userService;
     private EmailSenderService emailSenderService;
     private KeycloakService keycloakService;
+    private Keycloak keycloak;
+    ///test
+    @PostMapping("/sendMail")
+    public ResponseEntity sendMail(@RequestParam String to,@RequestParam String subject,@RequestParam String body) {
+        emailSenderService.sendSimpleEmail(to,subject,body);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+    ///
 
     @PostMapping("/registerSupplierClient")
     public ResponseEntity registerSupplierClient(@Valid @RequestBody UserDto userDto) {
@@ -60,27 +73,16 @@ public class UserController {
         userService.updatePassword(newPassword);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+    @GetMapping("/deactivateActivateAccount")
+    public String deactivateActivateAccount(@RequestParam String idUser){
+        return "Acount activated: "+userService.deactivateActivateAccount(idUser);
+    }
 
-    @PostMapping("/sendMail")
-    public ResponseEntity sendMail(@RequestParam String to,@RequestParam String subject,@RequestParam String body) {
-        emailSenderService.sendSimpleEmail(to,subject,body);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-    @GetMapping("/profile")
-    public ResponseEntity getProfile(HttpServletRequest request){
-        Principal keycloakPrincipal= request.getUserPrincipal();
-        System.out.println(keycloakPrincipal);
-        return ResponseEntity.status(HttpStatus.FOUND).body(keycloakService.whoAmI().toString());
-    }
-    @GetMapping("/logout")
-    public ResponseEntity<String> logout(@Context HttpServletRequest request,
-                                         @AuthenticationPrincipal KeycloakAuthenticationToken authenticationToken) {
-        keycloakService.keycloak().realm("pidev").users().get(keycloakService.whoAmI().getSubject()).logout();
-        request.getSession().invalidate();
-        return ResponseEntity.status(HttpStatus.GONE).body("Bye");
-    }
+    ///Nadhir start
     @GetMapping("/getNumeroClient/{idClient}")
     public String getNumeroClient(@PathVariable String idClient) {
         return userService.getNumeroClient(idClient);
     }
+
+    ///Nadhir end
 }

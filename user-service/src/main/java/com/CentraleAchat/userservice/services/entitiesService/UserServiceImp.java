@@ -47,6 +47,15 @@ public class UserServiceImp implements UserService {
         return updatedUser.getAttributes().get("phoneNumber").get(0);
     }
 
+    @Override
+    public Boolean deactivateActivateAccount(String idUser) {
+        UserResource userResource = keycloak.realm("pidev").users().get(idUser);
+        UserRepresentation user = userResource.toRepresentation();
+        user.setEnabled(!user.isEnabled());
+        userResource.update(user);
+        return user.isEnabled();
+    }
+
     //NadhirEnd
 
 
@@ -83,7 +92,7 @@ public class UserServiceImp implements UserService {
         HashMap<String, List<String>> attributes = new HashMap<>();
         attributes.put("phoneNumber", Collections.singletonList(String.valueOf(userDto.getPhoneNumber())));
         attributes.put("idCompany", Collections.singletonList(String.valueOf(userDto.getCompanyDto().getIdCompany())));
-        attributes.put("image", Collections.singletonList(userDto.getImage()));
+        attributes.put("image", Collections.singletonList((userDto.getImage() != null ? userDto.getImage() : "defaultImage")));
         user.setAttributes(attributes);
 
         //ACOUNT ACTIVATION
@@ -210,8 +219,9 @@ public class UserServiceImp implements UserService {
         updatedUser.getAttributes().put("phoneNumber", Arrays.asList((userDto.getImage() != null ? String.valueOf(userDto.getPhoneNumber()) :
                 updatedUser.getAttributes().get("phoneNumber").get(0))));
         userResource.update(updatedUser);
-        return null;
+        return updatedUser;
     }
+
 
     // @Scheduled(fixedRate = 60000)
     public void userIdsWithErrorCountGreaterThan3() {
