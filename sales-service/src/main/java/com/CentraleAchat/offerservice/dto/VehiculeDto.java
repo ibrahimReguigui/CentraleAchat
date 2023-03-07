@@ -19,8 +19,8 @@ public  class VehiculeDto {
     private String type;
     private String color;
 
-    private Long idSupplier;
-    private Long idLivreur;
+    private String idSupplier;
+    private String idLivreur;
 
     StatusVehicule statusVehicule ;
     Location location;
@@ -28,17 +28,6 @@ public  class VehiculeDto {
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
-
-
-
-    public Long getIdLivreur() {
-        return idLivreur;
-    }
-
-    public void setIdLivreur(Long idLivreur) {
-        this.idLivreur = idLivreur;
-    }
-
 
 
 }

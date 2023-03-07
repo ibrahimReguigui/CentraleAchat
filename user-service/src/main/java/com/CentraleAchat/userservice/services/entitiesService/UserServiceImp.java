@@ -3,6 +3,7 @@ package com.CentraleAchat.userservice.services.entitiesService;
 import com.CentraleAchat.userservice.dto.UserDto;
 import com.CentraleAchat.userservice.entities.Company;
 import com.CentraleAchat.userservice.entities.Role;
+import com.CentraleAchat.userservice.entities.StatusLivreur;
 import com.CentraleAchat.userservice.mappers.CompanyMapper;
 import com.CentraleAchat.userservice.services.APIService.APIDonnationService;
 import com.CentraleAchat.userservice.services.APIService.APIInventoryService;
@@ -93,6 +94,7 @@ public class UserServiceImp implements UserService {
         attributes.put("phoneNumber", Collections.singletonList(String.valueOf(userDto.getPhoneNumber())));
         attributes.put("idCompany", Collections.singletonList(String.valueOf(userDto.getCompanyDto().getIdCompany())));
         attributes.put("image", Collections.singletonList((userDto.getImage() != null ? userDto.getImage() : "defaultImage")));
+        attributes.put("statusLivreur", Collections.singletonList((null)));
         user.setAttributes(attributes);
 
         //ACOUNT ACTIVATION
@@ -145,6 +147,12 @@ public class UserServiceImp implements UserService {
         attributes.put("phoneNumber", Collections.singletonList(String.valueOf(userDto.getPhoneNumber())));
         attributes.put("idCompany", Collections.singletonList(String.valueOf(keycloakService.whoAmI().getOtherClaims().get("idCompany"))));
         attributes.put("image", Collections.singletonList((userDto.getImage() != null ? userDto.getImage() : "defaultImage")));
+
+        if(userDto.getRole()==Role.COURIER){
+            attributes.put("gouvernorat", Collections.singletonList(userDto.getGouvernorat()));
+            attributes.put("statusLivreur", Collections.singletonList((StatusLivreur.Actif.toString())));
+        }
+
         user.setAttributes(attributes);
 
         //ACOUNT ACTIVATION

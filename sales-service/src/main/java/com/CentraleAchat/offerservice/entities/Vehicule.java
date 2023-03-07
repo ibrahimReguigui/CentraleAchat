@@ -29,8 +29,9 @@ public class Vehicule extends BaseEntity{
 
 
     @NotEmpty(message = "idSupplier is mandatory")
-    private Long idSupplier;
+    private String idSupplier;
     @NotEmpty(message = "Status is mandatory")
+    private String idCompany;
 
 
     @Enumerated(EnumType.STRING)
@@ -38,7 +39,7 @@ public class Vehicule extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private Location location ;
-    private Long idLivreur;
+    private String idLivreur;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;
