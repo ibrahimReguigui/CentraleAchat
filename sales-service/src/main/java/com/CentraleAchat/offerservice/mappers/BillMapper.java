@@ -9,6 +9,7 @@ public class BillMapper {
         Bill bill = Bill.builder().build();
         bill.setIdClient(billDto.getIdClient());
         bill.setIdCompany(billDto.getIdSupplier());
+
         bill.setTVA(billDto.getTVA());
         bill.setHTVA(billDto.getHTVA());
         bill.setTotalTTC(billDto.getTotalTTC());
@@ -25,6 +26,7 @@ public class BillMapper {
         BillDTO billDto= BillDTO.builder()
                 .idClient(bill.getIdClient())
                 .idSupplier(bill.getIdCompany())
+
                 .TVA(bill.getTVA())
                 .HTVA(bill.getHTVA())
                 .totalTTC(bill.getTotalTTC())

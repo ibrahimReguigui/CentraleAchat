@@ -3,7 +3,9 @@ package com.CentraleAchat.userservice.dto;
 import com.CentraleAchat.userservice.entities.AcountStatus;
 import com.CentraleAchat.userservice.entities.Company;
 import com.CentraleAchat.userservice.entities.Role;
+
 import com.CentraleAchat.userservice.entities.StatusLivreur;
+
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,6 +27,7 @@ import java.time.LocalDateTime;
 public class UserDto {
 
     private String id;
+
 
     @NotEmpty(message = "Firstname is mandatory")
     private String firstName;
@@ -50,7 +53,9 @@ public class UserDto {
     @Size(min = 8, message = "Valid Phone number required")
     private int phoneNumber;
 
+
     private CompanyDto companyDto;
+
     private AcountStatus acountStatus;
     private LocalDateTime createdAt;
     private String createdBy;

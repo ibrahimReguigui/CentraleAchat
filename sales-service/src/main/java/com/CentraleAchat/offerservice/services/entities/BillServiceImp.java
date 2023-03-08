@@ -1,4 +1,4 @@
-package com.CentraleAchat.offerservice.services;
+package com.CentraleAchat.offerservice.services.entities;
 
 import com.CentraleAchat.offerservice.dto.BillDTO;
 import com.CentraleAchat.offerservice.entities.Bill;
@@ -38,5 +38,6 @@ public class BillServiceImp implements BillService{
     public Bill getBillByCode(Long codeBill) {
         return billRepository.findById(codeBill).get();
     }
+
 
 }

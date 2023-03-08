@@ -6,7 +6,6 @@ import com.CentraleAchat.userservice.entities.Role;
 import com.CentraleAchat.userservice.entities.StatusLivreur;
 import com.CentraleAchat.userservice.mappers.CompanyMapper;
 import com.CentraleAchat.userservice.services.APIService.APIDonnationService;
-import com.CentraleAchat.userservice.services.APIService.APIInventoryService;
 import com.CentraleAchat.userservice.services.utilsService.KeycloakService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ import org.keycloak.admin.client.resource.UsersResource;
 import java.time.Duration;
 
 import org.keycloak.representations.idm.*;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;

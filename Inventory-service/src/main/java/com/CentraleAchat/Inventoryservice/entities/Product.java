@@ -3,6 +3,7 @@ package com.CentraleAchat.Inventoryservice.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -18,11 +19,14 @@ public class Product extends BaseEntity{
     private String name;
     private String description;
     private int quantity;
-
-
     private String image;
     private float unitPriceHT;
-    @ManyToOne
+    private float discount;
+    private int firstQuantity;
+    private int lowQuantity ;
+    @Temporal(TemporalType.DATE)
+    private Date DateEndDiscount;
+    @ManyToOne( cascade=CascadeType.ALL)
     private Categorie categorie;
     @ManyToOne
     private Departement departement;

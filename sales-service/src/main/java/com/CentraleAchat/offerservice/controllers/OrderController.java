@@ -1,9 +1,9 @@
 package com.CentraleAchat.offerservice.controllers;
 
 import com.CentraleAchat.offerservice.entities.Order;
-import com.CentraleAchat.offerservice.services.APIUserService;
-import com.CentraleAchat.offerservice.services.OrderService;
-import com.CentraleAchat.offerservice.services.OrderServiceImp;
+import com.CentraleAchat.offerservice.services.API.APIUserService;
+import com.CentraleAchat.offerservice.services.entities.OrderService;
+import com.CentraleAchat.offerservice.services.entities.OrderServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

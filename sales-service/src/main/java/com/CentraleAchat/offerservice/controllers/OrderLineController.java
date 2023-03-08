@@ -1,7 +1,7 @@
 package com.CentraleAchat.offerservice.controllers;
 
 import com.CentraleAchat.offerservice.dto.ProductDTO;
-import com.CentraleAchat.offerservice.services.APIInventoryService;
+import com.CentraleAchat.offerservice.services.API.APIInventoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

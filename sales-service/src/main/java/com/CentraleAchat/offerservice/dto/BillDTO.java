@@ -19,6 +19,7 @@ public class BillDTO {
     private Long idBill;
     private String idClient;
     private String idSupplier;
+
     @NotEmpty(message = "TVA is mandatory")
     private float TVA;
     @NotEmpty(message = "HTVA is mandatory")

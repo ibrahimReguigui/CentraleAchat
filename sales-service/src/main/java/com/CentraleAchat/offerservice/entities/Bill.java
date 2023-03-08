@@ -31,6 +31,7 @@ public class Bill extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private BillStatus billStatus;
 
+
     @JsonIgnore
     @OneToOne(mappedBy = "bill")
     private Order orderr;

@@ -16,11 +16,11 @@ public class Departement extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDepartement;
-    private String name;
-    private float capacity;
+    private String nameDepartment;
+    private float capacityDepartment;
     @ManyToOne
     private Location location;
     @JsonIgnore
-    @OneToMany(mappedBy = "departement")
+    @OneToMany (mappedBy = "departement")
     private List<Product> products;
 }

@@ -1,4 +1,4 @@
-package com.CentraleAchat.offerservice.services;
+package com.CentraleAchat.offerservice.services.entities;
 
 
 import com.CentraleAchat.offerservice.dto.VehiculeDto;

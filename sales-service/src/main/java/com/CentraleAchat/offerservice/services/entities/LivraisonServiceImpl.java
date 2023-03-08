@@ -1,27 +1,22 @@
-package com.CentraleAchat.offerservice.services;
+package com.CentraleAchat.offerservice.services.entities;
 
 import com.CentraleAchat.offerservice.dto.LivraisonDto;
 import com.CentraleAchat.offerservice.entities.Bill;
 import com.CentraleAchat.offerservice.entities.Livraison;
 import com.CentraleAchat.offerservice.entities.Location;
 import com.CentraleAchat.offerservice.entities.StatusVehicule;
-import com.CentraleAchat.offerservice.mappers.LivraisonMapper;
-import com.CentraleAchat.offerservice.repositories.BillRepository;
 import com.CentraleAchat.offerservice.repositories.LivraisonRepository;
 import com.CentraleAchat.offerservice.services.utilsService.KeycloakService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
-import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j

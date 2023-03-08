@@ -1,6 +1,8 @@
-package com.CentraleAchat.offerservice.services;
+package com.CentraleAchat.offerservice.services.API;
+
 
 import com.CentraleAchat.offerservice.dto.Categorie;
+
 import com.CentraleAchat.offerservice.dto.ProductDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,7 @@ public interface APIInventoryService {
 
     @GetMapping("product/GetPriceProduct/{idProduct}")
     float GetPriceProductByIdProduct(@PathVariable Long idProduct);
-
     @GetMapping("product/getCategorieByIdProduct/{idProduct}")
      Categorie getCategorieByIdProduct(@PathVariable Long idProduct);
+
 }

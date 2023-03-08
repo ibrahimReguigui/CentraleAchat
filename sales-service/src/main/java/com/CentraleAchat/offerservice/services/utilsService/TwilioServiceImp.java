@@ -1,4 +1,4 @@
-package com.CentraleAchat.offerservice.services;
+package com.CentraleAchat.offerservice.services.utilsService;
 
 import com.twilio.Twilio;
 

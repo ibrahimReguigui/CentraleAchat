@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Getter
 @Setter
 @Builder
@@ -26,6 +27,7 @@ public class CompanyDto {
     private int companyRegisterNumber;
 
     private List<String> idUsers;
+
 
     private LocalDateTime createdAt;
     private String createdBy;

@@ -23,6 +23,7 @@ public class OrderLineDTO {
     @Size(message="Total must be positive")
     private float total;
     private String idClient;
+
     private String clientName;
     private OrderStatus status;
     private ProductDTO productDTO;

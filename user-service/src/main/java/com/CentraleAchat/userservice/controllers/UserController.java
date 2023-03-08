@@ -1,5 +1,6 @@
 package com.CentraleAchat.userservice.controllers;
 
+
 import com.CentraleAchat.userservice.services.utilsService.EmailSenderService;
 import com.CentraleAchat.userservice.dto.UserDto;
 import com.CentraleAchat.userservice.services.entitiesService.UserService;
@@ -99,4 +100,5 @@ public class UserController {
     }
 
     ///Nadhir end
+
 }

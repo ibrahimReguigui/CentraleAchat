@@ -5,11 +5,13 @@ import com.CentraleAchat.userservice.services.entitiesService.CompanyService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("company")
 public class CompanyController {
     private CompanyService companyService;
+
 
 //    @DeleteMapping("/delete")
 //    @ResponseStatus(HttpStatus.OK)
@@ -19,6 +21,7 @@ public class CompanyController {
     @PostMapping("/")
     public void  addCompany(@RequestBody CompanyDto companyDto){
         companyService.addCompany(companyDto);
+
     }
 
 }

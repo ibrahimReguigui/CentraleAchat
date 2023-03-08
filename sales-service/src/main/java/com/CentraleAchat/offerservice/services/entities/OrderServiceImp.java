@@ -1,4 +1,4 @@
-package com.CentraleAchat.offerservice.services;
+package com.CentraleAchat.offerservice.services.entities;
 
 
 import com.CentraleAchat.offerservice.entities.*;
@@ -6,6 +6,10 @@ import com.CentraleAchat.offerservice.repositories.BillRepository;
 import com.CentraleAchat.offerservice.repositories.OrderLineRepository;
 import com.CentraleAchat.offerservice.repositories.OrderRepository;
 
+
+import com.CentraleAchat.offerservice.services.API.APIInventoryService;
+import com.CentraleAchat.offerservice.services.API.APIUserService;
+import com.CentraleAchat.offerservice.services.utilsService.TwilioService;
 import com.CentraleAchat.offerservice.services.utilsService.KeycloakService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +19,11 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 @Slf4j
 @Service
@@ -35,6 +39,7 @@ public class OrderServiceImp implements OrderService {
     APIUserService apiUserService;
 
     BillRepository billRepository;
+
     TwilioService twilioService;
     private final Keycloak keycloak;
     private KeycloakService keycloakService;
@@ -44,6 +49,9 @@ public class OrderServiceImp implements OrderService {
     public Order sendOrder(Order order, String idClient) {
         List<OrderLine> orderLines = order.getOrderLines();
 
+        UserResource userResources = keycloak.realm("pidev").users().get(keycloakService.whoAmI().getSubject());
+        UserRepresentation users = userResources.toRepresentation();
+        order.setCreatedBy(users.getFirstName());
         float total = 0;
         for (OrderLine ol : orderLines) {
             float price = apiInventoryService.GetPriceProductByIdProduct(ol.getIdProduct());
@@ -57,29 +65,34 @@ public class OrderServiceImp implements OrderService {
         UserRepresentation client = userResource.toRepresentation();
         //
         twilioService.sendSms("+216" + client.getAttributes().get("phoneNumber").get(0),
-                " SALEM Mr " + client.getLastName()+" "+client.getFirstName() + ", Vous receiver un order");
+                " SALEM Mr " + client.getLastName() + " " + client.getFirstName() + ", Vous receiver un order");
         order.setIdClient(idClient);
         order.setTotal(total);
-        order.setClientName(client.getLastName()+" "+client.getFirstName());
+        order.setClientName(client.getLastName() + " " + client.getFirstName());
         order.setStatus(OrderStatus.PENDING);
         order.setIdOperator(keycloakService.whoAmI().getSubject());
         System.out.println("test");
+
         return orderRepository.save(order);
     }
 
     @Transactional
     public Order confirmerOrder(Long idOrder) {
+
         Order order = orderRepository.findById(idOrder).get();
         Bill bill = new Bill();
         order.setStatus(OrderStatus.COMPLETED);
         float HTVA = 0;
         float TVA = 0;
+        UserResource userResources = keycloak.realm("pidev").users().get(keycloakService.whoAmI().getSubject());
+        UserRepresentation users = userResources.toRepresentation();
+        order.setUpdatedBy(users.getFirstName());
 
         UserResource userResource = keycloak.realm("pidev").users().get(order.getIdOperator());
         UserRepresentation operateur = userResource.toRepresentation();
         //
         twilioService.sendSms("+216" + operateur.getAttributes().get("phoneNumber").get(0),
-                " SALEM Mr " + operateur.getLastName()+" "+operateur.getFirstName() + ", ordre confirmé");
+                " SALEM Mr " + operateur.getLastName() + " " + operateur.getFirstName() + ", ordre confirmé");
         List<OrderLine> orderLines = order.getOrderLines();
         for (OrderLine ol : orderLines) {
             float price = apiInventoryService.GetPriceProductByIdProduct(ol.getIdProduct());
@@ -99,18 +112,24 @@ public class OrderServiceImp implements OrderService {
         order.setBill(bill);
         billRepository.save(bill);
 
+
         return orderRepository.save(order);
     }
 
     @Transactional
     public Order retournerOrder(Long idOrder) {
+
         Order order = orderRepository.findById(idOrder).get();
+        UserResource userResources = keycloak.realm("pidev").users().get(keycloakService.whoAmI().getSubject());
+        UserRepresentation users = userResources.toRepresentation();
+        order.setUpdatedBy(users.getFirstName());
         if (order.getStatus() == OrderStatus.COMPLETED) {
             UserResource userResource = keycloak.realm("pidev").users().get(order.getIdOperator());
             UserRepresentation operateur = userResource.toRepresentation();
             //
             twilioService.sendSms("+216" + operateur.getAttributes().get("phoneNumber").get(0),
-                    " SALEM Mr " + operateur.getLastName()+" "+operateur.getFirstName() + ",return ordre ");
+                    " SALEM Mr " + operateur.getLastName() + " " + operateur.getFirstName() + ",return ordre ");
+
             order.setStatus(OrderStatus.RETURNED);
             List<OrderLine> orderLines = order.getOrderLines();
             for (OrderLine ol : orderLines) {
@@ -120,6 +139,7 @@ public class OrderServiceImp implements OrderService {
             }
             order.getBill().setBillType(BillType.RETURN);
 
+
         } else if (order.getStatus() == OrderStatus.PENDING) {
             log.info("order n'est completed");
         } else if (order.getStatus() == OrderStatus.CANCELED) {
@@ -128,25 +148,32 @@ public class OrderServiceImp implements OrderService {
             log.info("order est dejà returned");
 
         }
+
         return orderRepository.save(order);
     }
 
     @Transactional
     public Order denyOrder(Long idOrder) {
+
         Order order = orderRepository.findById(idOrder).get();
+        UserResource userResources = keycloak.realm("pidev").users().get(keycloakService.whoAmI().getSubject());
+        UserRepresentation users = userResources.toRepresentation();
+        order.setUpdatedBy(users.getFirstName());
         if (order.getStatus() == OrderStatus.PENDING) {
             order.setStatus(OrderStatus.CANCELED);
             UserResource userResource = keycloak.realm("pidev").users().get(order.getIdOperator());
             UserRepresentation operateur = userResource.toRepresentation();
             //
             twilioService.sendSms("+216" + operateur.getAttributes().get("phoneNumber").get(0),
-                    " SALEM Mr " + operateur.getLastName()+" "+operateur.getFirstName() + ",return ordre ");
+                    " SALEM Mr " + operateur.getLastName() + " " + operateur.getFirstName() + ",return ordre ");
             List<OrderLine> orderLines = order.getOrderLines();
             for (OrderLine ol : orderLines) {
+
 
                 apiInventoryService.annulerOrder(ol.getIdProduct(), ol.getQuantity());
 
             }
+
 
         } else if (order.getStatus() == OrderStatus.COMPLETED) {
             log.info("order est completed");
@@ -156,9 +183,11 @@ public class OrderServiceImp implements OrderService {
 
 
         } else {
+
             log.info("order est n'est pas en cours");
 
         }
+
 
         return orderRepository.save(order);
     }
@@ -167,6 +196,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public Order updateOrder(Order order) {
         return orderRepository.save(order);
+
     }
 
 
@@ -183,11 +213,12 @@ public class OrderServiceImp implements OrderService {
         List<OrderLine> orderLines = orderLineRepository.findAll();
         // Iterate through each order and order line and aggregate the product counts for each client
         for (Order order : orders) {
+
             String idClient = order.getIdClient();
             if (order.getStatus() == OrderStatus.COMPLETED) {
                 UserResource userResource = keycloak.realm("pidev").users().get(idClient);
                 UserRepresentation user = userResource.toRepresentation();
-                String clientName = user.getFirstName()+" "+user.getLastName();
+                String clientName = user.getFirstName() + " " + user.getLastName();
                 int totalProductCountForOrder = 0;
                 for (OrderLine orderLine : orderLines) {
                     if (orderLine.getOrder().getIdOrder().equals(order.getIdOrder())) {

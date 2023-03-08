@@ -4,7 +4,7 @@ import com.CentraleAchat.offerservice.dto.BillDTO;
 import com.CentraleAchat.offerservice.entities.Bill;
 import com.CentraleAchat.offerservice.entities.BillStatus;
 import com.CentraleAchat.offerservice.repositories.BillRepository;
-import com.CentraleAchat.offerservice.services.BillService;
+import com.CentraleAchat.offerservice.services.entities.BillService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;

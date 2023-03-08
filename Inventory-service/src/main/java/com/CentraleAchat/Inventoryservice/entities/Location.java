@@ -1,5 +1,6 @@
 package com.CentraleAchat.Inventoryservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,11 +16,15 @@ public class Location extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLocation;
-    private Long idSupplier;
-    private String name;
+    private String idSupplier;
+    private String nameLocation;
     private String adress;
-    private float capacity;
+    private float capacityLocation;
     private LocationType locationType;
+
+
+    @JsonIgnore
+
     @OneToMany(mappedBy = "location")
     private List<Departement> departementList;
 }

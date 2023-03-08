@@ -28,6 +28,7 @@ public class OrderDTO {
     private float total;
     private String idOperator;
     private String idClient;
+
     private String clientName;
     private OrderStatus status;
     private Long idOrderLine;

@@ -19,6 +19,10 @@ public class CharityAssociationDto extends BaseEntity {
 
     private Long idCharityAssociation;
 
+<<<<<<< HEAD
+=======
+    @NotNull
+>>>>>>> origin/raed
     private Long idAdmin;
 
     @NotNull(message = "Name mandatory")
