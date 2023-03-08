@@ -22,9 +22,6 @@ public class Vehicule extends BaseEntity{
     private String image;
     private String type;
     private String color;
-<<<<<<< Updated upstream
-=======
     private Long idSupplier;
->>>>>>> Stashed changes
 
 }

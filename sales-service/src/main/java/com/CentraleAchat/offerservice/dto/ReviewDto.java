@@ -28,6 +28,11 @@ public class ReviewDto {
     @NotEmpty(message = "idProduct is mandatory")
     private Long idProduct;
 
+    @NotEmpty(message = "idSupplier is mandatory")
+    private Long idSupplier;
+
     @NotEmpty(message = "avis is mandatory")
     private noteReview avis;
+
+
 }

@@ -15,6 +15,7 @@ public class ReviewMapper {
         review.setIdClient(reviewDto.getIdClient());
         review.setIdProduct(reviewDto.getIdProduct());
         review.setAvis(reviewDto.getAvis());
+        review.setIdSupplier(reviewDto.getIdSupplier());
         return review;
     }
 
@@ -26,6 +27,7 @@ public class ReviewMapper {
                 .idClient(review.getIdClient())
                 .idProduct(review.getIdProduct())
                 .avis(review.getAvis())
+                .idSupplier(review.getIdSupplier())
 
                 .build();
         return reviewDto;

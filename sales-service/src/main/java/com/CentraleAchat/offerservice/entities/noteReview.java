@@ -1,5 +1,5 @@
 package com.CentraleAchat.offerservice.entities;
 
 public enum noteReview {
-    SATISFAIT, NONSATISFAIT
+    SATISFAIT, NONSATISFAIT, EXCELLENT, BAD
 }

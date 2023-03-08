@@ -1,17 +1,19 @@
 package com.CentraleAchat.offerservice.repositories;
 
 import com.CentraleAchat.offerservice.entities.Review;
+import com.CentraleAchat.offerservice.entities.noteReview;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ReviewRepository extends CrudRepository<Review,Long> {
-    static List<Review> findByAvis(String avis) {
-        return findByAvis(avis);
-    }
+public interface ReviewRepository extends JpaRepository<Review,Long> {
+    List<Review> findByAvis(noteReview noteReview);
 
+    List<Review> findByIdProduct(Long idProduct);
     void deleteAllByIdProduct(Long idProduct);
+
     
 }

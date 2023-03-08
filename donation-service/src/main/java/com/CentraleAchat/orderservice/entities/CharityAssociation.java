@@ -3,6 +3,7 @@ package com.CentraleAchat.orderservice.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
@@ -22,4 +23,8 @@ public class CharityAssociation extends BaseEntity {
     private int phoneNumber;
     @OneToMany
     private List<Donnation> donnation;
+
+    @NotEmpty
+    @Enumerated(EnumType.STRING)
+    private TypeCharity typeCharity;
 }

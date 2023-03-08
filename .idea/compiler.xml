@@ -19,16 +19,13 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="chat-service" target="1.7" />
+      <module name="chat-service" target="1.8" />
       <module name="delivery-service" target="1.8" />
       <module name="donation-service" target="1.8" />
       <module name="Gateway" target="1.8" />
       <module name="Inventory-service" target="1.8" />
-<<<<<<< Updated upstream
-=======
       <module name="offer-service" target="1.8" />
       <module name="order-service" target="1.8" />
->>>>>>> Stashed changes
       <module name="registery-service" target="1.8" />
       <module name="sales-service" target="1.8" />
       <module name="user-service" target="1.8" />
@@ -41,11 +38,8 @@
       <module name="chat-service" options="-parameters" />
       <module name="delivery-service" options="-parameters" />
       <module name="donation-service" options="-parameters" />
-<<<<<<< Updated upstream
-=======
       <module name="offer-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
->>>>>>> Stashed changes
       <module name="registery-service" options="-parameters" />
       <module name="sales-service" options="-parameters" />
       <module name="user-service" options="-parameters" />

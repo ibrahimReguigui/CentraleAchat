@@ -15,8 +15,8 @@ public class OfferMapper {
         offer.setCreationDate(offerDto.getCreationDate());
         offer.setDeadLine(offerDto.getDeadLine());
 
-        offer.setIdClient(offer.getIdClient());
-        offer.setIdSupplier(offer.getIdSupplier());
+        offer.setIdClient(offerDto.getIdClient());
+        offer.setIdSupplier(offerDto.getIdSupplier());
         return offer;
     }
 
