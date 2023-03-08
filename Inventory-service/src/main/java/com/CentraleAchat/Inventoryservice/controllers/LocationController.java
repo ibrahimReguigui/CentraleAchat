@@ -21,5 +21,8 @@ public class LocationController {
     public Location updateLocation(@RequestBody Location location,@PathVariable Long idLocation){
         return locationService.updateLocation(location,idLocation);
     }
-
+    @DeleteMapping("/delete/{idLocation}")
+    public void deleteLocation(@PathVariable Long idLocation){
+        locationService.deleteLocation(idLocation);
+    }
 }

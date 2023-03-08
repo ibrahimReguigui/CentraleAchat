@@ -7,7 +7,10 @@ import com.CentraleAchat.Inventoryservice.repositories.ProductRepository;
 import com.CentraleAchat.Inventoryservice.services.ExportToPDF;
 import com.CentraleAchat.Inventoryservice.services.ProductService;
 import com.CentraleAchat.Inventoryservice.services.ProductServiceImp;
+import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,33 +31,32 @@ import java.util.List;
 
 public class ProductController {
     ProductService productService;
-    private final ProductRepository productRepository;
+     ProductRepository productRepository;
 
     @PostMapping("/add")
-    public ProductDto createProduct(@RequestBody ProductDto productDto)
-    {
-return productService.createProduct(productDto);
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
     }
+
     @PutMapping("/update")
-    public ProductDto updateProduct(@RequestBody ProductDto productDto)
-    {
+    public ProductDto updateProduct(@RequestBody ProductDto productDto) {
         return productService.createProduct(productDto);
     }
 
     @PostMapping("/addProductAndAffect/{idCategorie}/{idUnit}/{idDepartement}")
-    public Product createProductAffecterACategorieAndUnit(@RequestBody Product product,@PathVariable Long idCategorie,@PathVariable Long idUnit,@PathVariable Long idDepartement) {
+    public Product createProductAffecterACategorieAndUnit(@RequestBody Product product, @PathVariable Long idCategorie, @PathVariable Long idUnit, @PathVariable Long idDepartement) {
         product.setFirstQuantity(product.getQuantity());
-        return productService.createProductAffecterACategorieAndUnit(product,idCategorie,idUnit,idDepartement);
+        return productService.createProductAffecterACategorieAndUnit(product, idCategorie, idUnit, idDepartement);
     }
 
     @PutMapping("{idProduct}/{discount}/{DateEndDiscount}")
-    public Product applyDiscount(@PathVariable Long idProduct, @PathVariable float discount,@PathVariable(name = "DateEndDiscount") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date DateEndDiscount) {
-        return productService.applyDiscount(idProduct,discount,DateEndDiscount);
+    public Product applyDiscount(@PathVariable Long idProduct, @PathVariable float discount, @PathVariable(name = "DateEndDiscount") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date DateEndDiscount) {
+        return productService.applyDiscount(idProduct, discount, DateEndDiscount);
     }
 
     @GetMapping("/show/{idProduct}")
     @ResponseBody
-    public Product retrieveProduit(@PathVariable Long idProduct){
+    public Product retrieveProduit(@PathVariable Long idProduct) {
         return productService.retrieveProduit(idProduct);
     }
 
@@ -65,12 +67,14 @@ return productService.createProduct(productDto);
         List<Product> listProduits = productService.retrieveAllProduits();
         return listProduits;
     }
+
     @PutMapping("/update/{idProduct}")
     @ResponseBody
-        public ResponseEntity<Product> updateProduct(@RequestBody Product product,@PathVariable Long idProduct) {
-            Product updatedProduct = productService.updateProductById(idProduct, product);
-            return ResponseEntity.ok(updatedProduct);
-        }
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable Long idProduct) {
+        Product updatedProduct = productService.updateProductById(idProduct, product);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
     @DeleteMapping("/delete/{idProduct}")
     public void deleteProduct(@PathVariable Long idProduct) {
         productService.deleteProduct(idProduct);
@@ -84,19 +88,30 @@ return productService.createProduct(productDto);
 
 
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=produit_" +  ".pdf";
+        String headerValue = "attachment; filename=produit_" + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        List<Product> listP = productService.retrieveAllProduits();
+        List<Product> listP = productRepository.products();
 
         ExportToPDF exporter = new ExportToPDF(listP);
         exporter.export(response);
 
     }
+
     @GetMapping("/GetTop")
     @ResponseBody
-    public List<Product> getTopSellingProducts(){
-        return  productService.getTopSellingProducts();
+    public List<ProductDto> getTopSellingProducts() {
+        return productService.getTopSellingProducts();
     }
 }
+
+
+
+
+
+
+
+
+
+
 

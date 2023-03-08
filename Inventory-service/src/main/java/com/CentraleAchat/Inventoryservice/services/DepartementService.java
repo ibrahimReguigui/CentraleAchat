@@ -1,9 +1,11 @@
 package com.CentraleAchat.Inventoryservice.services;
 
 import com.CentraleAchat.Inventoryservice.dto.DepartementDto;
+import com.CentraleAchat.Inventoryservice.entities.Departement;
 
 public interface DepartementService {
     DepartementDto createDepartementAffecterALocation (DepartementDto departementDto,Long idLocation );
-    DepartementDto updateDepartement (DepartementDto departementDto);
+    Departement updateDepartement (Departement departement,Long idDepartement);
+    void deleteDepartement (Long idDepartement);
 }
 

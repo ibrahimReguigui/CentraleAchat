@@ -8,12 +8,16 @@ import com.CentraleAchat.Inventoryservice.repositories.DepartementRepository;
 import com.CentraleAchat.Inventoryservice.repositories.LocationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 @AllArgsConstructor
 public class DepartementServiceImp implements DepartementService {
     DepartementRepository departementRepositry;
     LocationRepository locationRepository;
+
+
 
 
 
@@ -28,9 +32,19 @@ public class DepartementServiceImp implements DepartementService {
   }
 
     @Override
-    public DepartementDto updateDepartement(DepartementDto departementDto){
-        Departement departement = departementRepositry.save(DepartementMapper.mapToEntity(departementDto));
-        return  DepartementMapper.mapToDo(departement);
+    public Departement updateDepartement(Departement departement,Long idDepartement) {
+        return departementRepositry.findById(idDepartement).map(departement1 ->
+        {
+            departement1.setNameDepartment(departement.getNameDepartment());
+            departement1.setCapacityDepartment(departement.getCapacityDepartment());
 
+            return departementRepositry.save(departement1);
+        }).orElseThrow(() -> new RuntimeException("Departement indisponible"));
     }
+
+  @Override
+    public void deleteDepartement (Long idDepartement){
+      departementRepositry.deleteById(idDepartement);
+  }
 }
+

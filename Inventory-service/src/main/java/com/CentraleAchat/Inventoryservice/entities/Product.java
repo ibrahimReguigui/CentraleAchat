@@ -23,6 +23,7 @@ public class Product extends BaseEntity{
     private float unitPriceHT;
     private float discount;
     private int firstQuantity;
+    private int lowQuantity ;
     @Temporal(TemporalType.DATE)
     private Date DateEndDiscount;
     @ManyToOne( cascade=CascadeType.ALL)

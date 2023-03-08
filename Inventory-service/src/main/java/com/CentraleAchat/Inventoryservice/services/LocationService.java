@@ -7,4 +7,5 @@ import com.CentraleAchat.Inventoryservice.entities.Location;
 public interface LocationService {
  Location createLocation(Location location);
     Location updateLocation(Location location,Long idLocation);
+   void deleteLocation(Long idLocation);
 }

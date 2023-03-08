@@ -10,7 +10,7 @@ public class ProductMapper {
         Categorie categorie =Categorie.builder().build();
         product.setIdProduct(productDto.getIdProduct());
         product.setName(productDto.getName());
-        categorie.setNameCategorie(productDto.getNameCategorie());
+      product.setFirstQuantity(productDto.getFirstQuantity());
         product.setDescription(productDto.getDescription());
         product.setQuantity(productDto.getQuantity());
         product.setUnitPriceHT(productDto.getUnitPriceHT());
@@ -25,7 +25,7 @@ public class ProductMapper {
                 .unitPriceHT(product.getUnitPriceHT())
                 .quantity(product.getQuantity())
                 .image(product.getImage())
-                .nameCategorie(product.getCategorie().getNameCategorie())
+
                 .build();
         return productDto;
     }

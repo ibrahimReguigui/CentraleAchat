@@ -29,6 +29,7 @@ CategorieRepository categorieRepositry;
     public Categorie updateCategorie(Categorie categorie,Long idCategorie) {
        return categorieRepositry.findById(idCategorie).map(categorie1 ->{
            categorie1.setNameCategorie(categorie.getNameCategorie());
+
   return categorieRepositry.save(categorie1);     }).orElseThrow(()->new RuntimeException("categorie non trouvee"));
 
     }

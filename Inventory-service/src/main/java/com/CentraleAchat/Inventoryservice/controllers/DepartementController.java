@@ -1,4 +1,5 @@
 package com.CentraleAchat.Inventoryservice.controllers;
+import com.CentraleAchat.Inventoryservice.entities.Departement;
 import com.CentraleAchat.Inventoryservice.services.DepartementService;
 import com.CentraleAchat.Inventoryservice.dto.CategorieDto;
 import com.CentraleAchat.Inventoryservice.dto.DepartementDto;
@@ -19,10 +20,14 @@ public class DepartementController {
     return departementService.createDepartementAffecterALocation(departementDto,idLocation);
     }
 
-    @PutMapping("/update")
-    public DepartementDto updateDepartement(@RequestBody DepartementDto departementDto) {
+    @PutMapping("/update/{idDepartement}")
+    public Departement updateDepartement(@RequestBody Departement departement,@PathVariable Long idDepartement) {
 
-        return departementService.updateDepartement(departementDto);
+        return departementService.updateDepartement(departement,idDepartement);
 
+    }
+    @DeleteMapping("/delete/{idDepartement}")
+    public void  deleteDepartement(@PathVariable Long idDepartement) {
+        departementService.deleteDepartement(idDepartement);
     }
 }

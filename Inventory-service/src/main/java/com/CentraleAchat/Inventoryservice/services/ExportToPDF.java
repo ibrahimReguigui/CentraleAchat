@@ -33,30 +33,30 @@ public class ExportToPDF {
 	         
 	        Font font = FontFactory.getFont(FontFactory.HELVETICA);
 	        
-	        cell.setPhrase(new Phrase("ID Produit", font));
-			table.addCell(cell);
+
 
 	        cell.setPhrase(new Phrase("Name", font));
 	        table.addCell(cell);
 	         
 	        cell.setPhrase(new Phrase("Description", font));
 	        table.addCell(cell);
-	         
-	        cell.setPhrase(new Phrase("Discount", font));
-	        table.addCell(cell);
+			cell.setPhrase(new Phrase("Catégorie", font));
+			table.addCell(cell);
+			cell.setPhrase(new Phrase("UnitPriceHT", font));
+			table.addCell(cell);
 	        
 	        cell.setPhrase(new Phrase("Quantity", font));
 	        table.addCell(cell);
+
 	        
-	        cell.setPhrase(new Phrase("UnitPriceHT", font));
-	        table.addCell(cell);
+
 	        
-	        cell.setPhrase(new Phrase("Catégorie", font));
-	        table.addCell(cell);
+
 
 			cell.setPhrase(new Phrase("Unit", font));
 			table.addCell(cell);
-	        
+			cell.setPhrase(new Phrase("Discount", font));
+			table.addCell(cell);
 	        
 	        
 	         
@@ -65,15 +65,19 @@ public class ExportToPDF {
 	     
 	    private void writeTableData(PdfPTable table) {
 	        for (Product produit : listP) {
-	        	
-	        	table.addCell(String.valueOf(produit.getIdProduct()));
+
+
 	        	table.addCell(produit.getName());
 	            table.addCell(produit.getDescription());
-	            table.addCell(String.valueOf(produit.getDiscount()));
-	            table.addCell(String.valueOf(produit.getQuantity()));
-	            table.addCell(String.valueOf(produit.getUnitPriceHT()));
-	            table.addCell(String.valueOf(produit.getCategorie().getNameCategorie()));
+				table.addCell(String.valueOf(produit.getCategorie().getNameCategorie()));
+				table.addCell(String.valueOf(produit.getUnitPriceHT()));
+				table.addCell(String.valueOf(produit.getQuantity()));
 				table.addCell(String.valueOf(produit.getUnit().getName()));
+	            table.addCell(String.valueOf(produit.getDiscount()));
+
+
+
+
 	            
 	            
 	        }
@@ -88,7 +92,7 @@ public class ExportToPDF {
 	        font.setSize(18);
 	        
 	         
-	        Paragraph p = new Paragraph("List produits", font);
+	        Paragraph p = new Paragraph("List product with low Quantity ", font);
 	        p.setAlignment(Paragraph.ALIGN_CENTER);
 	        
 	         
@@ -96,7 +100,7 @@ public class ExportToPDF {
 
 			PdfPTable table = new PdfPTable(7);
 	        table.setWidthPercentage(100f);
-	        table.setWidths(new float[] {2f, 2f, 2f, 2f, 2f, 3f, 3f});
+	        table.setWidths(new float[] {3f, 3f, 2f, 2f, 2f, 2f, 2f});
 	        table.setSpacingBefore(10);
 	         
 	        writeTableHeader(table);

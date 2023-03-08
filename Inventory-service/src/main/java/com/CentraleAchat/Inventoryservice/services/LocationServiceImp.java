@@ -28,6 +28,11 @@ public class LocationServiceImp implements LocationService {
             location1.setNameLocation(location.getNameLocation());
             location1.setCapacityLocation(location.getCapacityLocation());
             location1.setLocationType(location.getLocationType());
+            location1.setAdress(location.getAdress());
         return locationRepository.save(location1); } ).orElseThrow(()->new RuntimeException("Location non disponible"));
+        }
+        @Override
+    public void deleteLocation(Long idLocation){
+        locationRepository.deleteById(idLocation);
         }
 }
