@@ -1,0 +1,52 @@
+/* Police de caractère par défaut */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Styles pour le titre */
+h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Styles pour le sous-titre */
+h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Styles pour le contenu */
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* Styles pour les tableaux */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f7f7f7;
+}
+
+/* Styles pour les liens */
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

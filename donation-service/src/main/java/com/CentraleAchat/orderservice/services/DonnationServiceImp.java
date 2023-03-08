@@ -1,28 +1,12 @@
 package com.CentraleAchat.orderservice.services;
 
 import com.CentraleAchat.orderservice.dto.DonnationDto;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import com.CentraleAchat.orderservice.entities.Donnation;
-=======
->>>>>>> origin/raed
-=======
->>>>>>> origin/chawki
 import com.CentraleAchat.orderservice.mappers.DonnationMapper;
 import com.CentraleAchat.orderservice.repositories.CharityAssociationRepository;
 import com.CentraleAchat.orderservice.repositories.DonnationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-import java.util.HashMap;
-import java.util.List;
-
-=======
->>>>>>> origin/raed
-=======
->>>>>>> origin/chawki
 @Service
 @AllArgsConstructor
 public class DonnationServiceImp implements DonnationService {
@@ -44,12 +28,4 @@ public class DonnationServiceImp implements DonnationService {
     public DonnationDto getDonnation(Long idDonnation) {
         return DonnationMapper.mapToDto(donnationRepository.findById(idDonnation).get());
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/raed
-=======
->>>>>>> origin/chawki
 }

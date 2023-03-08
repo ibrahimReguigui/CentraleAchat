@@ -1,10 +1,11 @@
 package com.CentraleAchat.Inventoryservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -16,11 +17,5 @@ public class Categorie extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCategorie;
-    private String nameCategorie;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "categorie")
-    List<Product> products;
-
-
+    private String name;
 }

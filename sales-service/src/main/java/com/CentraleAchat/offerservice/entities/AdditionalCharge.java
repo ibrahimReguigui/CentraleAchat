@@ -2,7 +2,10 @@ package com.CentraleAchat.offerservice.entities;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -17,8 +20,4 @@ public class AdditionalCharge extends BaseEntity{
     private  String name;
     private float amount;
     private String details;
-
-    @ManyToOne
-    private Bill bil;
-
 }

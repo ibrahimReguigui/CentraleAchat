@@ -1,28 +1,19 @@
 package com.CentraleAchat.userservice.dto;
 
-
 import com.CentraleAchat.userservice.entities.AcountStatus;
-
+import com.CentraleAchat.userservice.entities.Company;
 import com.CentraleAchat.userservice.entities.Role;
-
-import com.CentraleAchat.userservice.entities.StatusLivreur;
-
-
-import com.CentraleAchat.userservice.entities.*;
-
 import lombok.*;
-
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-
-import javax.validation.constraints.NotNull;
-
 
 @Getter
 @Setter
@@ -31,8 +22,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UserDto {
 
-    private String id;
-
+    private Long id;
 
     @NotEmpty(message = "Firstname is mandatory")
     private String firstName;
@@ -45,11 +35,9 @@ public class UserDto {
     private String email;
 
     @Size(min = 7, message = "Password must have a minimum of 7 characters")
-    @Null
     private String password;
 
     @NotEmpty
-
     private Role role;
 
     @Lob
@@ -58,12 +46,8 @@ public class UserDto {
 
     @Size(min = 8, message = "Valid Phone number required")
     private int phoneNumber;
-    private CompanyDto companyDto;
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private StatusLivreur statusLivreur = StatusLivreur.Actif;
-    private Gouvernorat gouvernorat;
 
+    private Company company;
     private AcountStatus acountStatus;
     private LocalDateTime createdAt;
     private String createdBy;

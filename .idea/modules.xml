@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/CentraleAchat-Back-End.iml" filepath="$PROJECT_DIR$/.idea/CentraleAchat-Back-End.iml" />
       <module fileurl="file://$PROJECT_DIR$/Gateway/Gateway.iml" filepath="$PROJECT_DIR$/Gateway/Gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/Inventory-service/Inventory-service.iml" filepath="$PROJECT_DIR$/Inventory-service/Inventory-service.iml" />
+      <module fileurl="file://$USER_HOME$/spring/CentraleAchat-main/chat-service/chat-service.iml" filepath="$USER_HOME$/spring/CentraleAchat-main/chat-service/chat-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/donation-service/donation-service.iml" filepath="$PROJECT_DIR$/donation-service/donation-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/sales-service/offer-service.iml" filepath="$PROJECT_DIR$/sales-service/offer-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/donation-service/order-service.iml" filepath="$PROJECT_DIR$/donation-service/order-service.iml" />

@@ -1,7 +1,9 @@
 package com.CentraleAchat.offerservice.repositories;
 
 import com.CentraleAchat.offerservice.entities.Offer;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface OfferRepository extends JpaRepository<Offer,Long> {
+@Repository
+public interface OfferRepository extends CrudRepository<Offer,Long> {
 }
