@@ -11,9 +11,10 @@ import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -39,6 +40,19 @@ public class UserController {
         emailSenderService.sendSimpleEmail(to,subject,body);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestParam String username,@RequestParam String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(KeycloakService.authenticate(username,password));
+    }
+//    @PostMapping("/logout")
+//    public ResponseEntity logout() {
+//        return ResponseEntity.status(HttpStatus.OK).body(KeycloakService.logout(keycloakService.whoAmI()););
+//    }
+    @GetMapping("/profile")
+    public ResponseEntity profile() {
+        return ResponseEntity.status(HttpStatus.OK).body(keycloakService.whoAmI());
+    }
+
     ///
 
     @PostMapping("/registerSupplierClient")

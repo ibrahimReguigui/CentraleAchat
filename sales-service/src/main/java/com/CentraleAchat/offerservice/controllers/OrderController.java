@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -22,6 +24,7 @@ public class OrderController {
 
       @PostMapping("/createOrder/{idClient}")
       @ResponseStatus(HttpStatus.CREATED)
+      @RolesAllowed({"OPERATOR"})
       public Order createOrder(@RequestBody Order Order, @PathVariable String idClient) {
           return orderService.sendOrder(Order,idClient);
       }
@@ -38,27 +41,32 @@ public class OrderController {
         return orderService.retrieveAllOrder();
     }
 
+    @RolesAllowed({"CLIENT"})
     @PostMapping("/confirmerOrder/{idOrder}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Order confirmerOrder(@PathVariable Long idOrder){
         return orderService.confirmerOrder(idOrder);
     }
 
+    @RolesAllowed({"CLIENT"})
     @PostMapping("/denyOrder/{idOrder}")
     public Order denyOrder(@PathVariable Long idOrder) {
         return    orderService.denyOrder(idOrder);
     }
+    @RolesAllowed({"CLIENT"})
     @PostMapping("/retournerOrder/{idOrder}")
     public Order retournerOrder(@PathVariable Long idOrder) {
           return orderService.retournerOrder(idOrder);
     }
-//    @GetMapping("/get")
-//    public Map<String, Integer> calculateClientProductCounts() {
-//       return    orderServiceImp.calculateClientProductCounts();
-//    }
-//
-//    @GetMapping("/getByCategory")
-//    public Map<String, Map<String, Integer>> displayClientProductCounts(){
-//          return orderServiceImp.displayClientProductCounts();
-//    }
+
+    @RolesAllowed({"SUPPLIER"})
+    @GetMapping("/get")
+    public Map<String, Integer> calculateClientProductCounts() {
+       return    orderServiceImp.calculateClientProductCounts();
+    }
+    @RolesAllowed({"SUPPLIER"})
+    @GetMapping("/getByCategory")
+    public Map<String, Map<String, Integer>> displayClientProductCounts(){
+          return orderServiceImp.displayClientProductCounts();
+    }
 }

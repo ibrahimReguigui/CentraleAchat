@@ -74,6 +74,12 @@ public class OrderServiceImp implements OrderService {
         order.setStatus(OrderStatus.COMPLETED);
         float HTVA = 0;
         float TVA = 0;
+
+        UserResource userResource = keycloak.realm("pidev").users().get(order.getIdOperator());
+        UserRepresentation operateur = userResource.toRepresentation();
+        //
+        twilioService.sendSms("+216" + operateur.getAttributes().get("phoneNumber").get(0),
+                " SALEM Mr " + operateur.getLastName()+" "+operateur.getFirstName() + ", ordre confirmé");
         List<OrderLine> orderLines = order.getOrderLines();
         for (OrderLine ol : orderLines) {
             float price = apiInventoryService.GetPriceProductByIdProduct(ol.getIdProduct());
@@ -89,10 +95,6 @@ public class OrderServiceImp implements OrderService {
         bill.setIdClient(keycloakService.whoAmI().getSubject());
         bill.setBillType(BillType.NORMAL);
         bill.setBillStatus(BillStatus.NON_PAYEE);
-        //
-        UserResource userResource = keycloak.realm("pidev").users().get(order.getIdOperator());
-        UserRepresentation operateur = userResource.toRepresentation();
-        //
         bill.setIdCompany(operateur.getAttributes().get("idCompany").get(0));
         order.setBill(bill);
         billRepository.save(bill);
@@ -104,9 +106,15 @@ public class OrderServiceImp implements OrderService {
     public Order retournerOrder(Long idOrder) {
         Order order = orderRepository.findById(idOrder).get();
         if (order.getStatus() == OrderStatus.COMPLETED) {
+            UserResource userResource = keycloak.realm("pidev").users().get(order.getIdOperator());
+            UserRepresentation operateur = userResource.toRepresentation();
+            //
+            twilioService.sendSms("+216" + operateur.getAttributes().get("phoneNumber").get(0),
+                    " SALEM Mr " + operateur.getLastName()+" "+operateur.getFirstName() + ",return ordre ");
             order.setStatus(OrderStatus.RETURNED);
             List<OrderLine> orderLines = order.getOrderLines();
             for (OrderLine ol : orderLines) {
+
 
                 apiInventoryService.annulerOrder(ol.getIdProduct(), ol.getQuantity());
             }
@@ -128,6 +136,11 @@ public class OrderServiceImp implements OrderService {
         Order order = orderRepository.findById(idOrder).get();
         if (order.getStatus() == OrderStatus.PENDING) {
             order.setStatus(OrderStatus.CANCELED);
+            UserResource userResource = keycloak.realm("pidev").users().get(order.getIdOperator());
+            UserRepresentation operateur = userResource.toRepresentation();
+            //
+            twilioService.sendSms("+216" + operateur.getAttributes().get("phoneNumber").get(0),
+                    " SALEM Mr " + operateur.getLastName()+" "+operateur.getFirstName() + ",return ordre ");
             List<OrderLine> orderLines = order.getOrderLines();
             for (OrderLine ol : orderLines) {
 
@@ -163,60 +176,62 @@ public class OrderServiceImp implements OrderService {
     }
 
 
-//    public Map<String, Integer> calculateClientProductCounts() {
-//        Map<String, Integer> clientProductCounts = new HashMap<>();
-//
-//        List<Order> orders = orderRepository.findAll();
-//        List<OrderLine> orderLines = orderLineRepository.findAll();
-//        // Iterate through each order and order line and aggregate the product counts for each client
-//        for (Order order : orders) {
-//            String idClient = order.getIdClient();
-//            if (order.getStatus() == OrderStatus.COMPLETED) {
-//                String clientName = apiUserService.getClientNameById(idClient);
-//                int totalProductCountForOrder = 0;
-//                for (OrderLine orderLine : orderLines) {
-//                    if (orderLine.getOrder().getIdOrder().equals(order.getIdOrder())) {
-//                        totalProductCountForOrder += orderLine.getQuantity();
-//                        System.out.println(orderLine.getQuantity());
-//                    }
-//                }
-//
-//                if (clientProductCounts.containsKey(clientName)) {
-//                    clientProductCounts.put(clientName, clientProductCounts.get(clientName) + totalProductCountForOrder);
-//                } else {
-//                    clientProductCounts.put(clientName, totalProductCountForOrder);
-//                }
-//            }
-//        }
-//
-//
-//        return clientProductCounts;
-//    }
-//
-//    public Map<String, Map<String, Integer>> displayClientProductCounts() {
-//        List<OrderLine> orderLines = orderLineRepository.findAll();
-//
-//        Map<String, Map<String, Integer>> clientProductCounts = orderLines.stream()
-//                .collect(Collectors.groupingBy(
-//                        orderLine -> apiUserService.getClientNameById(orderLine.getOrder().getIdClient()),
-//                        Collectors.groupingBy(
-//                                orderLine -> apiInventoryService.getCategorieByIdProduct(orderLine.getIdProduct()).getNameCategorie(),
-//                                Collectors.summingInt(OrderLine::getQuantity))));
-//
-//        //  if (orderLines.forEach(orderline->(orderline.getOrder().getStatus())==(OrderStatus.COMPLETED)){
-//
-//        for (Map.Entry<String, Map<String, Integer>> clientEntry : clientProductCounts.entrySet()) {
-//            String clientId = clientEntry.getKey();
-//            Map<String, Integer> productCounts = clientEntry.getValue();
-//            System.out.println("Client " + clientId + " purchased the following products:");
-//            for (Map.Entry<String, Integer> productEntry : productCounts.entrySet()) {
-//                String productCategory = productEntry.getKey();
-//                int totalProductCount = productEntry.getValue();
-//                System.out.println("- " + productCategory + ": " + totalProductCount);
-//            }
-//        }
-//        return clientProductCounts;
-//    }
+    public Map<String, Integer> calculateClientProductCounts() {
+        Map<String, Integer> clientProductCounts = new HashMap<>();
+
+        List<Order> orders = orderRepository.findAll();
+        List<OrderLine> orderLines = orderLineRepository.findAll();
+        // Iterate through each order and order line and aggregate the product counts for each client
+        for (Order order : orders) {
+            String idClient = order.getIdClient();
+            if (order.getStatus() == OrderStatus.COMPLETED) {
+                UserResource userResource = keycloak.realm("pidev").users().get(idClient);
+                UserRepresentation user = userResource.toRepresentation();
+                String clientName = user.getFirstName()+" "+user.getLastName();
+                int totalProductCountForOrder = 0;
+                for (OrderLine orderLine : orderLines) {
+                    if (orderLine.getOrder().getIdOrder().equals(order.getIdOrder())) {
+                        totalProductCountForOrder += orderLine.getQuantity();
+                        System.out.println(orderLine.getQuantity());
+                    }
+                }
+
+                if (clientProductCounts.containsKey(clientName)) {
+                    clientProductCounts.put(clientName, clientProductCounts.get(clientName) + totalProductCountForOrder);
+                } else {
+                    clientProductCounts.put(clientName, totalProductCountForOrder);
+                }
+            }
+        }
+
+
+        return clientProductCounts;
+    }
+
+    public Map<String, Map<String, Integer>> displayClientProductCounts() {
+        List<OrderLine> orderLines = orderLineRepository.findAll();
+
+        Map<String, Map<String, Integer>> clientProductCounts = orderLines.stream()
+                .collect(Collectors.groupingBy(
+                        orderLine -> keycloak.realm("pidev").users().get(orderLine.getOrder().getIdClient()).toRepresentation().getFirstName(),
+                        Collectors.groupingBy(
+                                orderLine -> apiInventoryService.getCategorieByIdProduct(orderLine.getIdProduct()).getNameCategorie(),
+                                Collectors.summingInt(OrderLine::getQuantity))));
+
+        //  if (orderLines.forEach(orderline->(orderline.getOrder().getStatus())==(OrderStatus.COMPLETED)){
+
+        for (Map.Entry<String, Map<String, Integer>> clientEntry : clientProductCounts.entrySet()) {
+            String clientId = clientEntry.getKey();
+            Map<String, Integer> productCounts = clientEntry.getValue();
+            System.out.println("Client " + clientId + " purchased the following products:");
+            for (Map.Entry<String, Integer> productEntry : productCounts.entrySet()) {
+                String productCategory = productEntry.getKey();
+                int totalProductCount = productEntry.getValue();
+                System.out.println("- " + productCategory + ": " + totalProductCount);
+            }
+        }
+        return clientProductCounts;
+    }
 
 
 }

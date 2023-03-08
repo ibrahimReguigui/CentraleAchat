@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     ProductService productService;
+    ///Raed start
 
     @GetMapping("/getProductById/{idProduct}")
     public ProductDto getProductById(@PathVariable Long idProduct) {
@@ -22,6 +23,14 @@ public class ProductController {
     public Product CreateProduct(@RequestBody Product product) {
         return productService.CreateProduct(product);
     }
+    @PostMapping("/CreateProduct/{idCategorie}/{idUnit}/{idDepartement}")
+    public Product createProductAffecterACategorieAndUnit(@RequestBody Product product,@PathVariable Long idCategorie,@PathVariable Long idUnit,@PathVariable Long idDepartement){
+        return productService.createProductAffecterACategorieAndUnit(product,idCategorie,idUnit,idDepartement);
+    }
+
+    ///Raed end
+    ///Nadhir start
+
     @PutMapping("/commanderProduct/{idPrduct}/{quantiteCommande}")
     public void commanderProduct(@PathVariable Long idPrduct,@PathVariable int quantiteCommande) {
          productService.commanderProduct(idPrduct,quantiteCommande);
@@ -30,11 +39,6 @@ public class ProductController {
     public void annulerOrder(@PathVariable Long idPrduct,@PathVariable int quantiteCommande) {
            productService.annulerOrder(idPrduct,quantiteCommande);
     }
-    @PostMapping("/CreateProduct/{idCategorie}/{idUnit}/{idDepartement}")
-    public Product createProductAffecterACategorieAndUnit(@RequestBody Product product,@PathVariable Long idCategorie,@PathVariable Long idUnit,@PathVariable Long idDepartement){
-        return productService.createProductAffecterACategorieAndUnit(product,idCategorie,idUnit,idDepartement);
-    }
-
     @GetMapping("/GetPriceProduct/{idProduct}")
     public float GetPriceProductByIdProduct(@PathVariable Long idProduct){
         return productService.GetPriceProductByIdProduct(idProduct);

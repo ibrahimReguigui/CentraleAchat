@@ -44,7 +44,7 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     public void affecterLivreurVehicule(Long codeBill) {
-
+        keycloakService.whoAmI().getSubject();
         Bill bill = billService.getBillByCode(codeBill);
 
         UserResource userResourceClient = keycloak.realm("pidev").users().get(bill.getIdClient());
@@ -101,6 +101,7 @@ public class LivraisonServiceImpl implements LivraisonService {
     public LivraisonDto getLivraisonByCode(String code) {
         return null;
     }
+
 
 }
 
