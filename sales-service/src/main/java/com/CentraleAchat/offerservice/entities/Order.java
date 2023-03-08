@@ -29,10 +29,8 @@ public class Order extends BaseEntity{
     private String clientName;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-
     @OneToMany(mappedBy = "order")
     private List<OrderLine> orderLines;
-
     @OneToOne(cascade = CascadeType.ALL)
     private Bill bill;
 

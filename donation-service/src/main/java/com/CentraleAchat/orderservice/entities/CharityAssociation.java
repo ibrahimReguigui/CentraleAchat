@@ -21,6 +21,8 @@ public class CharityAssociation extends BaseEntity {
     private String address;
     private String bankAccount;
     private int phoneNumber;
+    private TypeCharity typeCharity ;
+    
     @OneToMany
     private List<Donnation> donnation;
 

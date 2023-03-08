@@ -35,7 +35,6 @@ public class Company extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private LineOfBusiness lineOfBusiness;
 
-
     @ElementCollection
     @CollectionTable(name = "idUsers")
     private List<String> idUsers;

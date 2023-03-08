@@ -1,10 +1,8 @@
 package com.CentraleAchat.offerservice.services.entities;
 
 import com.CentraleAchat.offerservice.dto.LivraisonDto;
-import com.CentraleAchat.offerservice.entities.Bill;
-import com.CentraleAchat.offerservice.entities.Livraison;
-import com.CentraleAchat.offerservice.entities.Location;
-import com.CentraleAchat.offerservice.entities.StatusVehicule;
+import com.CentraleAchat.offerservice.entities.*;
+import com.CentraleAchat.offerservice.mappers.LivraisonMapper;
 import com.CentraleAchat.offerservice.repositories.LivraisonRepository;
 import com.CentraleAchat.offerservice.services.utilsService.KeycloakService;
 import lombok.AllArgsConstructor;
@@ -13,11 +11,10 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -37,6 +34,11 @@ public class LivraisonServiceImpl implements LivraisonService {
 //        return LivraisonMapper.mapToDto(livraison);
 //    }
 
+    @Override
+    public LivraisonDto getLivraisonByCode(String code) {
+        Livraison livraison = livraisonRepository.findByCode(code).get();
+        return LivraisonMapper.mapToDto(livraison);
+    }
     @Override
     public void affecterLivreurVehicule(Long codeBill) {
         keycloakService.whoAmI().getSubject();
@@ -86,18 +88,71 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     }
 
-
-    @Override
-    public Livraison addNewLivraison(Long codeBill) {
-        return null;
+    public Map<String, Integer> getLivreurStatistics(String idLivreur) {
+        Map<String, Integer> statistics = new HashMap<>();
+        List<Livraison> livraisons = livraisonRepository.findByIdLivreur(idLivreur);
+        int totalLivraisons = livraisons.size();
+        int livraisonsDelivered = 0;
+        int livraisonsPending = 0;
+        int livraisonsLate = 0;
+        for (Livraison livraison : livraisons) {
+            if (livraison.getStatusLivraison() == StatusLivraison.Livre) {
+                livraisonsDelivered++;
+            } else if (livraison.getStatusLivraison() == StatusLivraison.EnCours) {
+                livraisonsPending++;
+                if (livraison.getDateLivraisonPrevue().before(new Date())) {
+                    livraisonsLate++;
+                }
+            }
+        }
+        statistics.put("totalLivraisons", totalLivraisons);
+        statistics.put("livraisonsDelivered", livraisonsDelivered);
+        statistics.put("livraisonsPending", livraisonsPending);
+        statistics.put("livraisonsLate", livraisonsLate);
+        return statistics;
     }
+    //@Scheduled(cron = "0 0 0 * * MON")
 
-    @Override
-    public LivraisonDto getLivraisonByCode(String code) {
-        return null;
+    //@Scheduled(fixedRate = 10)
+    //  @Scheduled(fixedRate = 10000 )
+    @Scheduled(cron = "*/10 * * * * *")
+    public  void getAllLivreurStatistics() {
+        List<UserRepresentation> users = keycloak.realm("pidev").users().list();
+        List<UserRepresentation> couriers = new ArrayList<>();
+        for (UserRepresentation user : users) {
+            List<RoleRepresentation> roles = keycloak.realm("pidev").users().get(user.getId()).roles().realmLevel().listEffective();
+            for (RoleRepresentation roleRepresentation : roles) {
+                if (roleRepresentation.toString().equals("COURIER")) {
+                    couriers.add(user);
+                }
+            }
+        }
+        Map<String, Map<String, Integer>> statistics = new HashMap<>();
+        for (UserRepresentation courier : couriers) {
+            List<Livraison> livraisons = livraisonRepository.findByIdLivreur(courier.getId());
+            int totalLivraisons = livraisons.size();
+            int livraisonsDelivered = 0;
+            int livraisonsPending = 0;
+            int livraisonsLate = 0;
+            for (Livraison livraison : livraisons) {
+                if (livraison.getStatusLivraison() == StatusLivraison.Livre) {
+                    livraisonsDelivered++;
+                } else if (livraison.getStatusLivraison() == StatusLivraison.EnCours) {
+                    livraisonsPending++;
+                    if (livraison.getDateLivraisonPrevue().before(new Date())) {
+                        livraisonsLate++;
+                    }
+                }
+            }
+            Map<String, Integer> courierStats = new HashMap<>();
+            courierStats.put("totalLivraisons", totalLivraisons);
+            courierStats.put("livraisonsDelivered", livraisonsDelivered);
+            courierStats.put("livraisonsPending", livraisonsPending);
+            courierStats.put("livraisonsLate", livraisonsLate);
+            statistics.put(courier.getEmail(), courierStats);
+        }
+        log.info(statistics.toString());
     }
-
-
 }
 
 

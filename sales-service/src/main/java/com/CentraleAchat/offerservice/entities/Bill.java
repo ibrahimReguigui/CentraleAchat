@@ -2,7 +2,6 @@ package com.CentraleAchat.offerservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -30,12 +29,11 @@ public class Bill extends BaseEntity{
     private BillType billType;
     @Enumerated(EnumType.STRING)
     private BillStatus billStatus;
-
-
+    @OneToMany(mappedBy = "bill")
+    private List<Livraison> livraisons;
     @JsonIgnore
     @OneToOne(mappedBy = "bill")
     private Order orderr;
-
     @OneToMany(mappedBy = "bil")
     private List<AdditionalCharge> additionalCharge;
 

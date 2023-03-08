@@ -1,6 +1,7 @@
 package com.CentraleAchat.orderservice.controllers;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.CentraleAchat.orderservice.dto.CharityAssociationDto;
 import com.CentraleAchat.orderservice.services.CharityAssociationService;
 import com.CentraleAchat.orderservice.services.DonnationService;
@@ -17,16 +18,22 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Set;
 =======
+=======
+>>>>>>> origin/chawki
 import com.CentraleAchat.orderservice.services.CharityAssociationService;
 import com.CentraleAchat.orderservice.services.DonnationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+<<<<<<< HEAD
 >>>>>>> origin/raed
+=======
+>>>>>>> origin/chawki
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("charity")
+<<<<<<< HEAD
 <<<<<<< HEAD
 @Slf4j
 public class CharityAssociationController {
@@ -56,4 +63,9 @@ public class CharityAssociationController {
     private DonnationService donnationService;
     private CharityAssociationService charityAssociationService;
 >>>>>>> origin/raed
+=======
+public class CharityAssociationController {
+    private DonnationService donnationService;
+    private CharityAssociationService charityAssociationService;
+>>>>>>> origin/chawki
 }

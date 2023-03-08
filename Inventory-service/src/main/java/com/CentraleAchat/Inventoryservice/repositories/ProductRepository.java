@@ -1,6 +1,5 @@
 package com.CentraleAchat.Inventoryservice.repositories;
 
-
 import com.CentraleAchat.Inventoryservice.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

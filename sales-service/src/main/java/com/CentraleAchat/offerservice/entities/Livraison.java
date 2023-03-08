@@ -2,7 +2,6 @@ package com.CentraleAchat.offerservice.entities;
 
 import com.CentraleAchat.offerservice.dto.VehiculeDto;
 import lombok.*;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,30 +16,21 @@ import java.util.Date;
 public class Livraison implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idLivraison; // Clé primaire
-  //  @NotEmpty(message = "Code is mandatory")
-
+    private Long idLivraison;
     @GeneratedValue
-    String code;
-   // @NotEmpty(message = "Status is mandatory")
+    private String code;
     @Enumerated(EnumType.STRING)
-    StatusLivraison statusLivraison;
-
-
-    String Description ;
+    private StatusLivraison statusLivraison;
+    private String Description ;
     @Temporal(TemporalType.DATE)
-    Date dateLivraisonPrevue;
+    private Date dateLivraisonPrevue;
     @Temporal(TemporalType.DATE)
-    Date dateLivraison;
-
-    String idLivreur ;
-
+    private Date dateLivraison;
+    private String idLivreur ;
     @ManyToOne
     @JoinColumn(name = "bill_id")
     private Bill bill;
-
     private Long idVehicule;
-
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;

@@ -2,7 +2,6 @@ package com.CentraleAchat.offerservice.dto;
 
 import com.CentraleAchat.offerservice.entities.StatusLivraison;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -12,23 +11,17 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LivraisonDto {
-//http://localhost:8094/swagger-ui/index.html
 
-    Long idLivraison; // Clé primaire
-    String code;
-    StatusLivraison statusLivraison;
-    String Description ;
-    Date dateLivraisonPrevue;
-    Date dateLivraison;
-    Long idLivreur;
-
-
-
+    private Long idLivraison;
+    private String code;
+    private StatusLivraison statusLivraison;
+    private String Description ;
+    private Date dateLivraisonPrevue;
+    private Date dateLivraison;
+    private Long idLivreur;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
-
-
 
 }

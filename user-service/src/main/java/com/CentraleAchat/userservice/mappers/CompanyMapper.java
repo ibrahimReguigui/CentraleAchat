@@ -14,7 +14,6 @@ public class CompanyMapper {
                 .logo(companyDto.getLogo())
                 .companyRegisterNumber(companyDto.getCompanyRegisterNumber())
                 .idUsers(companyDto.getIdUsers())
-
                 .build();
         company.setCreatedBy(companyDto.getCreatedBy());
         company.setCreatedAt(companyDto.getCreatedAt());
@@ -35,7 +34,6 @@ public class CompanyMapper {
                 .companyRegisterNumber(company.getCompanyRegisterNumber())
                 .logo(company.getLogo())
                 .idUsers(company.getIdUsers())
-
                 .build();
         return companyDto;
     }

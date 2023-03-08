@@ -18,16 +18,12 @@ public  class VehiculeDto {
     private String image;
     private String type;
     private String color;
-
     private String idSupplier;
     private String idLivreur;
-
-    StatusVehicule statusVehicule ;
-    Location location;
+    private StatusVehicule statusVehicule ;
+    private Location location;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
-
-
 }

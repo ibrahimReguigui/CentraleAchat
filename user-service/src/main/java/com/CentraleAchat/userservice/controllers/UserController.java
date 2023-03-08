@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,8 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.core.Context;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("user")
@@ -35,17 +39,26 @@ public class UserController {
     private EmailSenderService emailSenderService;
     private KeycloakService keycloakService;
     private Keycloak keycloak;
+
     ///test
-    @PostMapping("/sendMail")
-    public ResponseEntity sendMail(@RequestParam String to,@RequestParam String subject,@RequestParam String body) {
-        emailSenderService.sendSimpleEmail(to,subject,body);
+    @GetMapping("/test")
+    public ResponseEntity test() {
+
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestParam String username,@RequestParam String password) {
-        return ResponseEntity.status(HttpStatus.OK).body(KeycloakService.authenticate(username,password));
+
+    @PostMapping("/sendMail")
+    public ResponseEntity sendMail(@RequestParam String to, @RequestParam String subject, @RequestParam String body) {
+        emailSenderService.sendSimpleEmail(to, subject, body);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
-//    @PostMapping("/logout")
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestParam String username, @RequestParam String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(KeycloakService.authenticate(username, password));
+    }
+
+    //    @PostMapping("/logout")
 //    public ResponseEntity logout() {
 //        return ResponseEntity.status(HttpStatus.OK).body(KeycloakService.logout(keycloakService.whoAmI()););
 //    }
@@ -58,17 +71,17 @@ public class UserController {
 
     @PostMapping("/registerSupplierClient")
     public ResponseEntity registerSupplierClient(@Valid @RequestBody UserDto userDto) {
-        String result=userService.registerSupplierClient(userDto);
-        if (result=="User Already Exist")
+        String result = userService.registerSupplierClient(userDto);
+        if (result == "User Already Exist")
             return ResponseEntity.unprocessableEntity().body(result);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @PostMapping("/addOperatorCourier")
-    @RolesAllowed({"SYSTEMADMIN","SUPPLIER","ADMIN"})
+    @RolesAllowed({"SYSTEMADMIN", "SUPPLIER", "ADMIN"})
     public ResponseEntity registerOperatorCourier(@Valid @RequestBody UserDto userDto) {
-        String result=userService.registerOperatorCourier(userDto);
-        if (result=="User Already Exist")
+        String result = userService.registerOperatorCourier(userDto);
+        if (result == "User Already Exist")
             return ResponseEntity.unprocessableEntity().body(result);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -79,8 +92,8 @@ public class UserController {
     }
 
     @PutMapping("/updateEmployee")
-    public ResponseEntity updateEmployee(@Valid @RequestBody UserDto userDto,@RequestParam String idEmployee) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.updateEmployee(userDto,idEmployee));
+    public ResponseEntity updateEmployee(@Valid @RequestBody UserDto userDto, @RequestParam String idEmployee) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateEmployee(userDto, idEmployee));
     }
 
     @PutMapping("/updatePassword")
@@ -88,9 +101,10 @@ public class UserController {
         userService.updatePassword(newPassword);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     @GetMapping("/deactivateActivateAccount")
-    public String deactivateActivateAccount(@RequestParam String idUser){
-        return "Acount activated: "+userService.deactivateActivateAccount(idUser);
+    public String deactivateActivateAccount(@RequestParam String idUser) {
+        return "Acount activated: " + userService.deactivateActivateAccount(idUser);
     }
 
     ///Nadhir start
@@ -100,5 +114,6 @@ public class UserController {
     }
 
     ///Nadhir end
+
 
 }

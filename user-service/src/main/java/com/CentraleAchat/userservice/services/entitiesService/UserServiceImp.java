@@ -32,8 +32,6 @@ public class UserServiceImp implements UserService {
     private final Keycloak keycloak;
     private KeycloakService keycloakService;
     private CompanyService companyService;
-    private APIInventoryService apiInventoryService;
-    private APIDonnationService apiDonnationService;
 
 
     //NadhirStart
@@ -147,7 +145,7 @@ public class UserServiceImp implements UserService {
         attributes.put("image", Collections.singletonList((userDto.getImage() != null ? userDto.getImage() : "defaultImage")));
 
         if(userDto.getRole()==Role.COURIER){
-            attributes.put("gouvernorat", Collections.singletonList(userDto.getGouvernorat()));
+            attributes.put("gouvernorat", Collections.singletonList(userDto.getGouvernorat().toString()));
             attributes.put("statusLivreur", Collections.singletonList((StatusLivreur.Actif.toString())));
         }
 
