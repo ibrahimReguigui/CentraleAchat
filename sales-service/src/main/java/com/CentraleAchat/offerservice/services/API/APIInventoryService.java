@@ -8,6 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient("INVENTORY-SERVICE")
 public interface APIInventoryService {
@@ -24,5 +25,7 @@ public interface APIInventoryService {
     float GetPriceProductByIdProduct(@PathVariable Long idProduct);
     @GetMapping("product/getCategorieByIdProduct/{idProduct}")
      Categorie getCategorieByIdProduct(@PathVariable Long idProduct);
+    @GetMapping("Product/delete")
+    public String deleteProd(@RequestParam Long id);
 
 }

@@ -1,18 +1,17 @@
 package com.CentraleAchat.Inventoryservice.controllers;
 
-
 import com.CentraleAchat.Inventoryservice.dto.ProductDto;
 import com.CentraleAchat.Inventoryservice.entities.Categorie;
 import com.CentraleAchat.Inventoryservice.entities.Product;
 import com.CentraleAchat.Inventoryservice.repositories.ProductRepository;
 import com.CentraleAchat.Inventoryservice.services.entities.ExportToPDF;
 import com.CentraleAchat.Inventoryservice.services.entities.ProductService;
+import com.CentraleAchat.Inventoryservice.services.entities.ProductServiceImp;
 import com.lowagie.text.DocumentException;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,6 +28,7 @@ import java.util.List;
 public class ProductController {
     ProductService productService;
     ProductRepository productRepository;
+    ProductServiceImp productServiceImp;
 
     ///Raed start
     @PostMapping("/add")
@@ -129,5 +129,17 @@ public class ProductController {
         return productService.getCategorieByIdProduct(idProduct);
     }
     ///Nadhir end
+    ///Nahawand start
+    @GetMapping("/delete")
+    public String deleteProd(@RequestParam Long id) {
+        productRepository.deleteById(id);
+        return "deleted";
+    }
+    @DeleteMapping("/deletereviewandprod/{idProduct}")
+    public void deleteAllReviewOfProductAndTheProduct(@PathVariable Long idProduct){
+        System.out.println(idProduct);
+        productServiceImp.deleteAllReviewOfProductAndTheProduct(idProduct);
+    }
+    ///Nahawnd end
 }
 

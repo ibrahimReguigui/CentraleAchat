@@ -10,20 +10,17 @@
         <module name="sales-service" />
         <module name="registery-service" />
         <module name="Gateway" />
-        <module name="offer-service" />
-        <module name="order-service" />
+        <module name="chat-service" />
         <module name="user-service" />
         <module name="donation-service" />
         <module name="Inventory-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="delivery-service" target="1.8" />
+      <module name="chat-service" target="1.8" />
       <module name="donation-service" target="1.8" />
       <module name="Gateway" target="1.8" />
       <module name="Inventory-service" target="1.8" />
-      <module name="offer-service" target="1.8" />
-      <module name="order-service" target="1.8" />
       <module name="registery-service" target="1.8" />
       <module name="sales-service" target="1.8" />
       <module name="user-service" target="1.8" />
@@ -33,10 +30,8 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Gateway" options="-parameters" />
       <module name="Inventory-service" options="-parameters" />
-      <module name="delivery-service" options="-parameters" />
+      <module name="chat-service" options="-parameters" />
       <module name="donation-service" options="-parameters" />
-      <module name="offer-service" options="-parameters" />
-      <module name="order-service" options="-parameters" />
       <module name="registery-service" options="-parameters" />
       <module name="sales-service" options="-parameters" />
       <module name="user-service" options="-parameters" />

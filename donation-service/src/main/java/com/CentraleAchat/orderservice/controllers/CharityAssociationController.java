@@ -2,6 +2,7 @@ package com.CentraleAchat.orderservice.controllers;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.CentraleAchat.orderservice.dto.CharityAssociationDto;
 import com.CentraleAchat.orderservice.services.CharityAssociationService;
 import com.CentraleAchat.orderservice.services.DonnationService;
@@ -20,19 +21,25 @@ import java.util.Set;
 =======
 =======
 >>>>>>> origin/chawki
+=======
+>>>>>>> origin/nahawand
 import com.CentraleAchat.orderservice.services.CharityAssociationService;
 import com.CentraleAchat.orderservice.services.DonnationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/raed
 =======
 >>>>>>> origin/chawki
+=======
+>>>>>>> origin/nahawand
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("charity")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 @Slf4j
@@ -68,4 +75,9 @@ public class CharityAssociationController {
     private DonnationService donnationService;
     private CharityAssociationService charityAssociationService;
 >>>>>>> origin/chawki
+=======
+public class CharityAssociationController {
+    private DonnationService donnationService;
+    private CharityAssociationService charityAssociationService;
+>>>>>>> origin/nahawand
 }

@@ -10,6 +10,7 @@ import com.CentraleAchat.Inventoryservice.repositories.CategorieRepository;
 import com.CentraleAchat.Inventoryservice.repositories.DepartementRepository;
 import com.CentraleAchat.Inventoryservice.repositories.ProductRepository;
 import com.CentraleAchat.Inventoryservice.repositories.UnitRepository;
+import com.CentraleAchat.Inventoryservice.services.API.APISalesService;
 import com.CentraleAchat.Inventoryservice.services.utilsService.KeycloakService;
 import lombok.AllArgsConstructor;
 
@@ -19,6 +20,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -31,6 +33,8 @@ public class ProductServiceImp implements ProductService {
 
     private final Keycloak keycloak;
     private KeycloakService keycloakService;
+    APISalesService apiSalesService;
+    ProductRepository productRepository;
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
@@ -138,7 +142,7 @@ public class ProductServiceImp implements ProductService {
         int numProducts = Math.min(allProducts.size(), 10);
         for (int i = 0; i < numProducts; i++) {
             Product product = allProducts.get(i);
-            ProductDto productDto = new ProductDto(product.getIdProduct(), product.getName(), product.getDescription(), product.getUnitPriceHT(), product.getQuantity(), product.getImage(), product.getFirstQuantity());
+            ProductDto productDto = new ProductDto(product.getIdProduct(), product.getName(), product.getDescription(), product.getUnitPriceHT(), product.getQuantity(), product.getImage(), product.getFirstQuantity(),product.getCategorie().getNameCategorie());
             topSellingProducts.add(productDto);
         }
 
@@ -173,5 +177,15 @@ public class ProductServiceImp implements ProductService {
     }
 
     ///Nadhir end
+    ///Nahawand
+    @Transactional
+    public void deleteAllReviewOfProductAndTheProduct(Long idProduct) {
+        System.out.println(idProduct);
+        Product product=productRepository.findById(idProduct).get();
+        apiSalesService.deleteAllReviewByIdProduct(idProduct);
+        product.setCategorie(null);
+        productRepository.save(product);
+        productRepository.delete(product);
+    }
 }
 

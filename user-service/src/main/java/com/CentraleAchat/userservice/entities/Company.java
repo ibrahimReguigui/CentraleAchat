@@ -40,4 +40,5 @@ public class Company extends BaseEntity {
     private List<String> idUsers;
 
 
+
 }

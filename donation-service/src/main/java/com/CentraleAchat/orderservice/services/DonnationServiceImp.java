@@ -3,17 +3,21 @@ package com.CentraleAchat.orderservice.services;
 import com.CentraleAchat.orderservice.dto.DonnationDto;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.CentraleAchat.orderservice.entities.Donnation;
 =======
 >>>>>>> origin/raed
 =======
 >>>>>>> origin/chawki
+=======
+>>>>>>> origin/nahawand
 import com.CentraleAchat.orderservice.mappers.DonnationMapper;
 import com.CentraleAchat.orderservice.repositories.CharityAssociationRepository;
 import com.CentraleAchat.orderservice.repositories.DonnationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import java.util.HashMap;
@@ -23,6 +27,8 @@ import java.util.List;
 >>>>>>> origin/raed
 =======
 >>>>>>> origin/chawki
+=======
+>>>>>>> origin/nahawand
 @Service
 @AllArgsConstructor
 public class DonnationServiceImp implements DonnationService {
@@ -46,10 +52,13 @@ public class DonnationServiceImp implements DonnationService {
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 =======
 >>>>>>> origin/raed
 =======
 >>>>>>> origin/chawki
+=======
+>>>>>>> origin/nahawand
 }

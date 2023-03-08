@@ -7,6 +7,7 @@ import lombok.Setter;
 
 
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -22,16 +23,16 @@ public class ProductDto {
     private String nameCategorie;
 
 
-   private  int firstQuantity;
+    private int firstQuantity;
 
-    public ProductDto(Long idProduct, String name, String description, float unitPriceHT, int quantity, String image,int firstQuantity ) {
+    public ProductDto(Long idProduct, String name, String description, float unitPriceHT, int quantity, String image, int firstQuantity, String nameCategorie) {
         this.idProduct = idProduct;
         this.name = name;
         this.description = description;
         this.unitPriceHT = unitPriceHT;
-        this.quantity = quantity ;
-        this.firstQuantity =firstQuantity;
-
+        this.quantity = quantity;
+        this.firstQuantity = firstQuantity;
+        this.nameCategorie = nameCategorie;
         this.image = image;
     }
 }
