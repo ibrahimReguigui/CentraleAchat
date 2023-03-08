@@ -3,6 +3,7 @@ package com.CentraleAchat.offerservice.services;
 import com.CentraleAchat.offerservice.dto.OfferDto;
 import com.CentraleAchat.offerservice.dto.ReviewDto;
 import com.CentraleAchat.offerservice.entities.Offer;
+import com.CentraleAchat.offerservice.entities.OfferStatus;
 import com.CentraleAchat.offerservice.entities.Review;
 import com.CentraleAchat.offerservice.mappers.OfferMapper;
 import com.CentraleAchat.offerservice.mappers.ReviewMapper;
@@ -51,6 +52,7 @@ public class OfferService implements IOfferService {
 
     public OfferDto addOffer(OfferDto offerDto) {
         Offer offer = offerRepository.save(OfferMapper.mapToEntity(offerDto));
+        offer.setOfferStatus(OfferStatus.EN_COURS);
         return OfferMapper.mapToDto(offer);
     }
 

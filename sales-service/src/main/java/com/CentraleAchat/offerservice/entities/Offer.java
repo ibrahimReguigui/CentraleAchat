@@ -29,6 +29,8 @@ public class Offer extends BaseEntity{
     @NotNull
     @Temporal(TemporalType.DATE)
     private Date deadLine;
+    @Enumerated(EnumType.STRING)
+    private OfferStatus offerStatus;
 
     private Long idClient;
     private Long idSupplier;

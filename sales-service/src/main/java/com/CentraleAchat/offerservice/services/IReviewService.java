@@ -22,4 +22,6 @@ public interface IReviewService {
 
     void deleteAllReviewByIdProduct(@RequestParam Long idProduct);
 
+    Long findMostOccurringIdClient();
+
 }

@@ -61,11 +61,6 @@ public class ReviewController {
 
     }*/
 
-
-
-
-
-
     @GetMapping("/{avis}")
     public List<Review> getReviewByAvis(@PathVariable("avis") noteReview avis) {
             return reviewService.getReviewByAvis(avis);
@@ -81,6 +76,11 @@ public class ReviewController {
     @DeleteMapping("/deleteAllReviewByIdProduct/{idProduct}")
     public void deleteAllReviewByIdProduct(@PathVariable Long idProduct) {
         reviewService.deleteAllReviewByIdProduct(idProduct);
+    }
+
+    @GetMapping("/findMostOccurringIdClient")
+    public Long findMostOccurringIdClient(){
+        return reviewService.findMostOccurringIdClient();
     }
 
     }

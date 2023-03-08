@@ -1,11 +1,14 @@
 package com.CentraleAchat.offerservice.dto;
 
+import com.CentraleAchat.offerservice.entities.OfferStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
@@ -30,7 +33,8 @@ public class OfferDto {
     private Date creationDate;
     @NotEmpty(message = "Deadline is mandatory")
     private Date deadLine;
-
+    @Enumerated(EnumType.STRING)
+    OfferStatus offerStatus;
     @NotEmpty(message = "idClient is mandatory")
     private Long idClient;
     @NotEmpty(message = "idSupplier is mandatory")

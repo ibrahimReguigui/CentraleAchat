@@ -12,9 +12,9 @@ public class OfferMapper {
         offer.setTitle(offerDto.getTitle());
         offer.setDescription(offerDto.getDescription());
         offer.setImage(offerDto.getImage());
+        offer.setOfferStatus(offerDto.getOfferStatus());
         offer.setCreationDate(offerDto.getCreationDate());
         offer.setDeadLine(offerDto.getDeadLine());
-
         offer.setIdClient(offerDto.getIdClient());
         offer.setIdSupplier(offerDto.getIdSupplier());
         return offer;
@@ -29,11 +29,9 @@ public class OfferMapper {
                 .description(offer.getDescription())
                 .creationDate(offer.getCreationDate())
                 .deadLine(offer.getDeadLine())
-
+                .offerStatus(offer.getOfferStatus())
                 .idClient(offer.getIdClient())
                 .idSupplier(offer.getIdSupplier())
-
-
                 .build();
         return offerDto;
     }

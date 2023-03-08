@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,12 +26,25 @@ public class ReviewService implements IReviewService {
     @Autowired
     ReviewRepository reviewRepository;
 
+    private String eliminateBadWords(String comment) {
+        // Replace any bad words in the comment with asterisks
+        String[] badWords = {"badWord1", "badWord2", "badWord3"};
+        for (String word : badWords) {
+            comment = comment.replaceAll(word, "***");
+        }
+        return comment;
+    }
 
     public ReviewDto addReview(ReviewDto reviewDto) {
+
+        String commentWithoutBadWords = eliminateBadWords(reviewDto.getComment());
+        reviewDto.setComment(commentWithoutBadWords);
+
         Review review = reviewRepository.save(ReviewMapper.mapToEntity(reviewDto));
         System.out.println(review.getAvis());
         return ReviewMapper.mapToDto(review);
     }
+
 
     public ReviewDto updatereview(ReviewDto reviewDto) {
         Review review = reviewRepository.save(ReviewMapper.mapToEntity(reviewDto));
@@ -214,5 +229,22 @@ public class ReviewService implements IReviewService {
             System.out.println("Supplier " + supplierId + " top products: " + topProducts);
         }
     }
+
+    public Long findMostOccurringIdClient() {
+        Map<Long, Long> idClientCountMap = new HashMap<>();
+
+        List<Review> reviews = reviewRepository.findAll();
+        for (Review review : reviews) {
+            Long idClient = review.getIdClient();
+            if (idClient != null) {
+                Long count = idClientCountMap.getOrDefault(idClient, 0L);
+                idClientCountMap.put(idClient, count + 1);
+            }
+        }
+
+        return Collections.max(idClientCountMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
+
 }
 
