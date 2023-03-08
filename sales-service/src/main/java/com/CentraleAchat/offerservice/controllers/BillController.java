@@ -1,4 +1,4 @@
-package com.CentraleAchat.offerservice.controlles;
+package com.CentraleAchat.offerservice.controllers;
 
 import com.CentraleAchat.offerservice.dto.BillDTO;
 import com.CentraleAchat.offerservice.entities.Bill;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class BillController {
         return billService.retrieveAllBill();
     }
 
+    @RolesAllowed({"CLIENT"})
     @PostMapping("/paiement")
     public Bill createPayment(@RequestParam("idBill") Long idBill) {
         Stripe.apiKey = stripeSecretKey;

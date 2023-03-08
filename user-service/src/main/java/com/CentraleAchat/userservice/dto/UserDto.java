@@ -3,6 +3,7 @@ package com.CentraleAchat.userservice.dto;
 import com.CentraleAchat.userservice.entities.AcountStatus;
 import com.CentraleAchat.userservice.entities.Company;
 import com.CentraleAchat.userservice.entities.Role;
+import com.CentraleAchat.userservice.entities.StatusLivreur;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -55,4 +56,8 @@ public class UserDto {
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
+
+
+    private String gouvernorat;
+    private StatusLivreur statusLivreur;
 }

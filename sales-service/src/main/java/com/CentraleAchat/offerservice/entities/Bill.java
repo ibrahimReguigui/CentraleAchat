@@ -19,6 +19,7 @@ public class Bill extends BaseEntity{
     private Long codeBill;
     private String idClient;
     private String idCompany;
+    private String idSupplier;
     @NotEmpty(message = "TVA is mandatory")
     private float TVA;
     @NotEmpty(message = "HTVA is mandatory")
