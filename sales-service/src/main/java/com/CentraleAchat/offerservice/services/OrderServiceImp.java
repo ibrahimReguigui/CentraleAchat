@@ -49,8 +49,7 @@ twilioService.sendSms("+216"+apiUserService.getNumeroClient(idClient)," SALEM Mr
         order.setIdClient(idClient);
         order.setTotal(total);
         order.setClientName(apiUserService.getClientNameById(idClient));
-        order.setStatus(OrderStatus.PENDING);//qsdqs
-        System.out.println( "test");
+        order.setStatus(OrderStatus.PENDING);
         return orderRepository.save(order);
     }
 

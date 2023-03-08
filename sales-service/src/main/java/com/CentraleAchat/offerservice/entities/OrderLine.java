@@ -17,6 +17,7 @@ public class OrderLine extends BaseEntity{
     private Long idOrderLine;
     private Long idProduct;
     private int quantity;
+
     @JsonIgnore
     @ManyToOne
     private Order order;
