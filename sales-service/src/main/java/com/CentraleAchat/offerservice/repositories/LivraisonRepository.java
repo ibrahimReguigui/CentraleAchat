@@ -12,5 +12,8 @@ import java.util.Optional;
 public interface LivraisonRepository extends JpaRepository <Livraison, Long>{
     Optional<Livraison> findByCode(String code);
 
+    List<Livraison> findByIdLivreur(Long idLivreur);
+
+
 
 }

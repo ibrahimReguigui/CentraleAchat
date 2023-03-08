@@ -8,10 +8,12 @@ import java.util.List;
 
 public interface LivraisonService {
     // add new livraison
-    @Transactional
-    Livraison addNewLivraison(Long codeBill);
+  //  @Transactional
+  //  Livraison addNewLivraison(Long codeBill);
 
     LivraisonDto getLivraisonByCode(String code);
 
     // List<Livraison> retrieveAllLivraisons();
+
+
 }

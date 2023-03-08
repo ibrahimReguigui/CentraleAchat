@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/livraison")
 @Tag(name="Livraison Management")
@@ -54,8 +56,18 @@ LivraisonRepository livraisonRepository ;
 
 
 
+    @GetMapping("/{idLivreur}/statistics")
+    public ResponseEntity<Map<String, Integer>> getLivreurStatistics(@PathVariable Long idLivreur) {
+        Map<String, Integer> statistics = livraisonServiceImpl.getLivreurStatistics(idLivreur);
+        return ResponseEntity.ok(statistics);
+    }
 
 
+    @GetMapping("/statistics")
+    public ResponseEntity<Map<Long, Map<String, Integer>>> getAllLivreurStatistics() {
+        Map<Long, Map<String, Integer>> statistics = livraisonServiceImpl.getAllLivreurStatistics();
+        return ResponseEntity.ok(statistics);
+    }
 
 
 }
