@@ -2,14 +2,15 @@ package com.CentraleAchat.offerservice.entities;
 
 import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
 @Getter
 @Setter
 @Builder
-@Table( name = "Offer")
 @AllArgsConstructor
 @Entity
 @NoArgsConstructor
@@ -17,21 +18,10 @@ public class Offer extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idOffer;
-    @NotNull
     private String title;
     private String description;
     private String image;
-
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-
-    @NotNull
-    @Temporal(TemporalType.DATE)
     private Date deadLine;
-    @Enumerated(EnumType.STRING)
-    private OfferStatus offerStatus;
-
     private Long idClient;
     private Long idSupplier;
 }
