@@ -72,7 +72,7 @@ public class ReviewController {
         return reviewList ;
 
     }
-
+//c bn
     @DeleteMapping("/deleteAllReviewByIdProduct/{idProduct}")
     public void deleteAllReviewByIdProduct(@PathVariable Long idProduct) {
         reviewService.deleteAllReviewByIdProduct(idProduct);

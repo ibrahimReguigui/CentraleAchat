@@ -22,5 +22,6 @@ public class Vehicule extends BaseEntity{
     private String image;
     private String type;
     private String color;
+    private Long idSupplier;
 
 }
