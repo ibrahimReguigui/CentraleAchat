@@ -7,6 +7,8 @@ import com.CentraleAchat.userservice.repositories.CompanyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CompanyServiceImp implements CompanyService{
@@ -32,5 +34,10 @@ public class CompanyServiceImp implements CompanyService{
     @Override
     public CompanyDto getCompany(Long idCompany) {
         return CompanyMapper.mapToDto(companyRepository.findById(idCompany).get());
+    }
+
+    @Override
+    public List<Company> getAllCompany() {
+        return companyRepository.findAll();
     }
 }

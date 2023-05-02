@@ -1,12 +1,10 @@
 package com.CentraleAchat.userservice.services.entitiesService;
 
 import com.CentraleAchat.userservice.dto.UserDto;
-import com.CentraleAchat.userservice.entities.Company;
-import com.CentraleAchat.userservice.entities.Role;
-import com.CentraleAchat.userservice.entities.StatusLivreur;
+import com.CentraleAchat.userservice.entities.*;
 import com.CentraleAchat.userservice.mappers.CompanyMapper;
+import com.CentraleAchat.userservice.repositories.EventRepository;
 import com.CentraleAchat.userservice.services.APIService.APIDonnationService;
-import com.CentraleAchat.userservice.services.APIService.APIInventoryService;
 import com.CentraleAchat.userservice.services.utilsService.KeycloakService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +13,11 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 
+import org.keycloak.events.EventType;
 import org.keycloak.representations.idm.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.core.Response;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -34,10 +36,80 @@ public class UserServiceImp implements UserService {
     private final Keycloak keycloak;
     private KeycloakService keycloakService;
     private CompanyService companyService;
-    private APIInventoryService apiInventoryService;
-    private APIDonnationService apiDonnationService;
+    private EventRepository eventRepository;
+
+    ///front
+
+    @Scheduled(fixedRate = 60000)
+    //@Scheduled(cron = "0 0 21 * * *")
+    public void countLoginsAndErrors() throws ParseException {
+        log.info("countLoginsAndErrors started");
+        List<EventRepresentation> eventList = keycloak.realm("pidev").getEvents();
+
+        Map<String, Map<String, Integer>> loginCountMap = new HashMap<>();
+        Map<String, Map<String, Integer>> loginErrorCountMap = new HashMap<>();
+
+        for (EventRepresentation event : eventList) {
+            String eventType = event.getType();
+            if ((eventType.equals(EventType.LOGIN.toString()) || eventType.equals(EventType.LOGIN_ERROR.toString()))&& event.getUserId()!=null) {
+                String userId = event.getUserId();
+                String dateString = LocalDate.ofEpochDay(event.getTime() / (24 * 60 * 60 * 1000)).toString(); // Convert timestamp to date string
+
+                Map<String, Integer> userCountMap;
+                if (eventType.equals(EventType.LOGIN.toString())) {
+                    userCountMap = loginCountMap.computeIfAbsent(dateString, k -> new HashMap<>());
+                } else {
+                    userCountMap = loginErrorCountMap.computeIfAbsent(dateString, k -> new HashMap<>());
+                }
+                userCountMap.put(userId, userCountMap.getOrDefault(userId, 0) + 1);
+            }
+        }
 
 
+        //keycloak.realm("pidev").clearEvents();
+
+
+        for (Map.Entry<String, Map<String, Integer>> entry : loginCountMap.entrySet()) {
+            String dateString = entry.getKey();
+            Map<String, Integer> userCountMap = entry.getValue();
+            for (Map.Entry<String, Integer> userCountEntry : userCountMap.entrySet()) {
+                String userId = userCountEntry.getKey();
+                int count = userCountEntry.getValue();
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = dateFormat.parse(dateString);
+                EventId eventId = new EventId(userId, "LOGIN", date);
+                Event event = Event.builder()
+                        .eventId(eventId)
+                        .count(count)
+                        .build();
+                eventRepository.save(event);
+            }
+        }
+        for (Map.Entry<String, Map<String, Integer>> entry : loginErrorCountMap.entrySet()) {
+            String dateString = entry.getKey();
+            Map<String, Integer> userCountMap = entry.getValue();
+            for (Map.Entry<String, Integer> userCountEntry : userCountMap.entrySet()) {
+                String userId = userCountEntry.getKey();
+                int count = userCountEntry.getValue();
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = dateFormat.parse(dateString);
+                EventId eventId = new EventId(userId, "LOGIN-ERROR", date);
+                Event event = Event.builder()
+                        .eventId(eventId)
+                        .count(count)
+                        .build();
+                eventRepository.save(event);
+            }
+        }
+        log.info("countLoginsAndErrors ended");
+    }
+
+
+
+
+    ///
     //NadhirStart
 
     @Override
@@ -78,8 +150,11 @@ public class UserServiceImp implements UserService {
             return "User Already Exist";
 
         //COMPANY REGISTRATION
-        if (userDto.getRole() == Role.SUPPLIER)
+        if (userDto.getRole() == Role.SUPPLIER){
+            System.out.println(userDto.getCompanyDto().getCompanyName());
             userDto.setCompanyDto(companyService.addCompany(userDto.getCompanyDto()));
+        }
+
 
         //CREATE THE USER IMAGE
         UserRepresentation user = new UserRepresentation();
@@ -92,8 +167,9 @@ public class UserServiceImp implements UserService {
         //ATRIBUTES
         HashMap<String, List<String>> attributes = new HashMap<>();
         attributes.put("phoneNumber", Collections.singletonList(String.valueOf(userDto.getPhoneNumber())));
-        attributes.put("idCompany", Collections.singletonList(String.valueOf(userDto.getCompanyDto().getIdCompany())));
+        attributes.put("idCompany", Collections.singletonList((userDto.getCompanyDto() != null ? String.valueOf(userDto.getCompanyDto().getIdCompany()): "default")));
         attributes.put("image", Collections.singletonList((userDto.getImage() != null ? userDto.getImage() : "defaultImage")));
+        attributes.put("adress", Collections.singletonList((userDto.getAdress() != null ? userDto.getAdress() : "default")));
         attributes.put("statusLivreur", Collections.singletonList((null)));
         user.setAttributes(attributes);
 
@@ -126,7 +202,7 @@ public class UserServiceImp implements UserService {
             companyService.addCompany(userDto.getCompanyDto());
         }
 
-        return user.getUsername() + " " + userDto.getCompanyDto().getIdCompany() + " " + roles + " " + createdUserId;
+        return user.getUsername()  + " " + roles + " " + createdUserId;
     }
 
     @Override
@@ -149,7 +225,7 @@ public class UserServiceImp implements UserService {
         attributes.put("image", Collections.singletonList((userDto.getImage() != null ? userDto.getImage() : "defaultImage")));
 
         if(userDto.getRole()==Role.COURIER){
-            attributes.put("gouvernorat", Collections.singletonList(userDto.getGouvernorat()));
+            attributes.put("gouvernorat", Collections.singletonList(userDto.getGouvernorat().toString()));
             attributes.put("statusLivreur", Collections.singletonList((StatusLivreur.Actif.toString())));
         }
 
@@ -202,8 +278,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserRepresentation updateProfile(UserDto userDto) {
-
+        System.out.println(keycloakService.whoAmI().getSubject());
         UserResource userResource = keycloak.realm("pidev").users().get(keycloakService.whoAmI().getSubject());
+
         UserRepresentation updatedUser = userResource.toRepresentation();
         updatedUser.setFirstName(userDto.getFirstName());
         updatedUser.setLastName(userDto.getLastName());
@@ -211,6 +288,8 @@ public class UserServiceImp implements UserService {
                 updatedUser.getAttributes().get("image").get(0))));
         updatedUser.getAttributes().put("phoneNumber", Arrays.asList((userDto.getImage() != null ? String.valueOf(userDto.getPhoneNumber()) :
                 updatedUser.getAttributes().get("phoneNumber").get(0))));
+        updatedUser.getAttributes().put("adress", Arrays.asList((userDto.getAdress() != null ? (userDto.getAdress()) :
+                updatedUser.getAttributes().get("adress").get(0))));
         userResource.update(updatedUser);
 
         return updatedUser;
@@ -222,27 +301,37 @@ public class UserServiceImp implements UserService {
         UserRepresentation updatedUser = userResource.toRepresentation();
         updatedUser.setFirstName(userDto.getFirstName());
         updatedUser.setLastName(userDto.getLastName());
+        System.out.println(updatedUser.getFirstName()+updatedUser.getLastName());
         updatedUser.getAttributes().put("image", Arrays.asList((userDto.getImage() != null ? userDto.getImage() :
                 updatedUser.getAttributes().get("image").get(0))));
         updatedUser.getAttributes().put("phoneNumber", Arrays.asList((userDto.getImage() != null ? String.valueOf(userDto.getPhoneNumber()) :
                 updatedUser.getAttributes().get("phoneNumber").get(0))));
+        updatedUser.getAttributes().put("adress", Arrays.asList((userDto.getAdress() != null ? (userDto.getAdress()) :
+                updatedUser.getAttributes().get("adress").get(0))));
+        System.out.println(updatedUser.getAttributes().get("adress").toString());
         userResource.update(updatedUser);
+        System.out.println("updated");
         return updatedUser;
     }
 
 
-    // @Scheduled(fixedRate = 60000)
+    //@Scheduled(fixedRate = 10000)
     public void userIdsWithErrorCountGreaterThan3() {
         log.info("userIdsWithErrorCountGreaterThan3 started");
         //GET EVENTS LIST
         List<EventRepresentation> eventRepresentationList = keycloak.realm("pidev").getEvents();
 
         Map<String, Integer> LOGIN_ERROR_List = new HashMap<>();
-
+        Map<String, Integer> LOGIN_SUCCESS_List = new HashMap<>();
         for (EventRepresentation eventRepresentation : eventRepresentationList) {
             if (eventRepresentation.getType().equals("LOGIN_ERROR")) {
+                System.out.println(eventRepresentation.getDetails());
                 String userId = eventRepresentation.getUserId();
                 LOGIN_ERROR_List.put(userId, LOGIN_ERROR_List.getOrDefault(userId, 0) + 1);
+            }
+            if (eventRepresentation.getType().equals("LOGIN")) {
+                String userId = eventRepresentation.getUserId();
+                LOGIN_SUCCESS_List.put(userId, LOGIN_ERROR_List.getOrDefault(userId, 0) + 1);
             }
         }
 
@@ -254,7 +343,7 @@ public class UserServiceImp implements UserService {
         log.info("userIdsWithErrorCountGreaterThan3 ended");
     }
 
-    //@Scheduled(fixedRate = 60000)
+    //@Scheduled(fixedRate = 10000)
     public void securityCheck() {
         log.info("securityCheck started");
         //GET EVENTS LIST
@@ -277,7 +366,7 @@ public class UserServiceImp implements UserService {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
 
-        Map<String, Integer> percentageDangerOnAccount = new HashMap<>();
+        //Map<String, Integer> percentageDangerOnAccount = new HashMap<>();
         for (Map.Entry<String, Integer> entryLOGIN_ERROR_List : LOGIN_ERROR_List.entrySet()) {
             log.warn("this user " + entryLOGIN_ERROR_List.getKey() + " presents a security risk of : " +
                     df.format(100 * (float) entryLOGIN_ERROR_List.getValue() /
@@ -322,4 +411,5 @@ public class UserServiceImp implements UserService {
             System.out.println("User: " + user.getUsername() + " - Session duration: " + durationString);
         }
     }
+
 }

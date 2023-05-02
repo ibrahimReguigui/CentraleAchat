@@ -1,6 +1,5 @@
 package com.CentraleAchat.userservice.mappers;
 
-
 import com.CentraleAchat.userservice.dto.CompanyDto;
 import com.CentraleAchat.userservice.entities.Company;
 
@@ -12,6 +11,7 @@ public class CompanyMapper {
                 .companyPhoneNumber(companyDto.getCompanyPhoneNumber())
                 .logo(companyDto.getLogo())
                 .companyRegisterNumber(companyDto.getCompanyRegisterNumber())
+                .lineOfBusiness(companyDto.getLineOfBusiness())
                 .idUsers(companyDto.getIdUsers())
                 .build();
         company.setCreatedBy(companyDto.getCreatedBy());
@@ -28,6 +28,7 @@ public class CompanyMapper {
                 .updatedAt(company.getUpdatedAt())
                 .updatedBy(company.getUpdatedBy())
                 .idCompany(company.getIdCompany())
+                .lineOfBusiness(company.getLineOfBusiness())
                 .companyName(company.getCompanyName())
                 .companyPhoneNumber(company.getCompanyPhoneNumber())
                 .companyRegisterNumber(company.getCompanyRegisterNumber())

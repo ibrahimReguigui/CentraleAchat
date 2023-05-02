@@ -3,22 +3,21 @@ package com.CentraleAchat.userservice.controllers;
 import com.CentraleAchat.userservice.dto.CompanyDto;
 import com.CentraleAchat.userservice.services.entitiesService.CompanyService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("company")
+@Slf4j
+@AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class CompanyController {
+
     private CompanyService companyService;
 
-//    @DeleteMapping("/delete")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void deleteCompany(@RequestParam Long idCompany) {
-//        companyService.deleteCompany(idCompany);
-//    }
-    @PostMapping("/")
-    public void  addCompany(@RequestBody CompanyDto companyDto){
-        companyService.addCompany(companyDto);
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getCompany")
+    public CompanyDto getCompany(@RequestParam Long idC) {
+        return companyService.getCompany(idC);
     }
-
 }

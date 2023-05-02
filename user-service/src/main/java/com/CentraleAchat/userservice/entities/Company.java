@@ -39,4 +39,6 @@ public class Company extends BaseEntity {
     @CollectionTable(name = "idUsers")
     private List<String> idUsers;
 
+
+
 }
