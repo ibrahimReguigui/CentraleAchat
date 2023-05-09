@@ -9,16 +9,16 @@
         <outputRelativeToContentRoot value="true" />
         <module name="sales-service" />
         <module name="registery-service" />
-        <module name="Gateway" />
         <module name="offer-service" />
-        <module name="user-service" />
+        <module name="Gateway" />
+        <module name="chat-service" />
         <module name="order-service" />
+        <module name="user-service" />
         <module name="donation-service" />
         <module name="Inventory-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="chat-service" target="1.8" />
       <module name="donation-service" target="1.8" />
       <module name="sales-service" target="1.8" />
     </bytecodeTargetLevel>
