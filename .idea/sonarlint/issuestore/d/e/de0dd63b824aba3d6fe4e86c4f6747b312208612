@@ -1,0 +1,11 @@
+
+[
+java:S1128"@Remove this unused import 'org.springframework.http.HttpStatus'.(íŸ¤Šúÿÿÿÿ
+m
+java:S1128"RRemove this unused import 'org.springframework.web.bind.annotation.DeleteMapping'.(­ìÎªşÿÿÿÿ
+l
+java:S1128"QRemove this unused import 'org.springframework.web.bind.annotation.RequestParam'.(Â¬À·ùÿÿÿÿ
+i
+java:S1128	"SRemove this unused import 'org.springframework.web.bind.annotation.ResponseStatus'.(¯×ñ
+X
+java:S1128"CRemove this unused import 'javax.annotation.security.RolesAllowed'.(®®€

@@ -1,0 +1,12 @@
+
+a
+java:S1192"FDefine a constant instead of duplicating this literal "pidev" 4 times.(ŽšÃ‰ÿÿÿÿÿ
+y
+java:S14880"cImmediately return this expression instead of assigning it to the temporary variable "accessToken".(È…Îæ
+V	java:S125""<This block of commented-out lines of code should be removed.(ÄÏç¿ÿÿÿÿÿ
+S	java:S1067"9Replace this use of System.out or System.err by a logger.(ÎèŽüÿÿÿÿ
+S	java:S106:"9Replace this use of System.out or System.err by a logger.(©þêÜúÿÿÿÿ
+N	java:S106;"9Replace this use of System.out or System.err by a logger.(öØÈ¢
+S	java:S106?"9Replace this use of System.out or System.err by a logger.(Âû¯Ðüÿÿÿÿ
+N	java:S106C"9Replace this use of System.out or System.err by a logger.(¯§áë
+S	java:S106O"9Replace this use of System.out or System.err by a logger.(žéÁßüÿÿÿÿ
