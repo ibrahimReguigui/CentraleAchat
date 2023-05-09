@@ -37,11 +37,11 @@ public class KeycloakService {
     @Bean
     public Keycloak keycloak() {
         return KeycloakBuilder.builder()
-                .serverUrl("http://localhost:8080/")
+                .serverUrl("http://localhost:8099/")
                 .realm("pidev")
                 .clientId("pidev")
-                .clientSecret("O84ZEbHGfkZpgoUVrJx4pUDiiFxSBGpL")
-                .username("systemadmin")
+                .clientSecret("pvs3oudngIxtojOSiITvfcU2QTn7cgkr")
+                .username("systemadmin@mail.com")
                 .password("systemadmin")
                 .build();
     }
@@ -53,8 +53,8 @@ public class KeycloakService {
                 .username(username)
                 .password(password)
                 .clientId("pidev")
-                .clientSecret("O84ZEbHGfkZpgoUVrJx4pUDiiFxSBGpL")
-                .serverUrl("http://localhost:8080/")
+                .clientSecret("pvs3oudngIxtojOSiITvfcU2QTn7cgkr")
+                .serverUrl("http://localhost:8099/")
                 .realm("pidev")
                 .build();
 
@@ -63,7 +63,7 @@ public class KeycloakService {
         return keycloak.tokenManager().getAccessToken();
     }
     public static void logout(String accessToken) throws IOException {
-        String keycloakUrl="http://localhost:8080/";
+        String keycloakUrl="http://localhost:8099/";
         String realm="pidev";
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(keycloakUrl + "/realms/" + realm + "/protocol/openid-connect/logout");

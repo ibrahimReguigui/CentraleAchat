@@ -13,14 +13,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Date;
 import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class UserDto {
 
     private String id;
@@ -29,7 +27,7 @@ public class UserDto {
 
     @NotEmpty(message = "LastName is mandatory")
     private String lastName;
-
+private String adress;
     @Email(message = "Valid Email required")
     @NotEmpty(message = "Email is mandatory")
     private String email;
@@ -41,17 +39,14 @@ public class UserDto {
     @NotEmpty
     private Role role;
 
-    private String adress;
-
-    private Date birthDate;
     @Lob
     @Column(columnDefinition = "BLOB")
     private String image;
 
-    @Size(min = 8, message = "Valid Phone number required")
+    //@Size(min = 8, message = "Valid Phone number required")
     private int phoneNumber;
     private CompanyDto companyDto;
-
+    @NotNull
     @Enumerated(EnumType.STRING)
     private StatusLivreur statusLivreur = StatusLivreur.Actif;
     private Gouvernorat gouvernorat;

@@ -19,13 +19,13 @@ import java.time.Duration;
 
 import org.keycloak.events.EventType;
 import org.keycloak.representations.idm.*;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -38,9 +38,38 @@ public class UserServiceImp implements UserService {
     private CompanyService companyService;
     private EventRepository eventRepository;
 
-    ///front
+    public void clearEvent(){
+        keycloak.realm("pidev").clearEvents();
+    }
+    public int getLoginErrorsForUser(String userId) {
+        log.info("getLoginErrorsForUser started for userId: {}", userId);
 
-    @Scheduled(fixedRate = 60000)
+        int count = 0;
+
+        try {
+            List<EventRepresentation> events = keycloak.realm("pidev").getEvents();
+
+            // count the number of login errors that occurred today
+            for (EventRepresentation event : events) {
+                if (event.getType().equals("LOGIN_ERROR") && event.getUserId().equals(userId)) {
+                    Instant instant = Instant.ofEpochMilli(event.getTime());
+                    LocalDate date = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+                    if (date.equals(LocalDate.now())) {
+                        count++;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            log.error("Error getting events for user: {}", userId, e);
+        }
+
+        log.info("getLoginErrorsForUser ended for userId: {}", userId);
+
+        return count;
+    }
+
+    //@Scheduled(fixedRate = 10000)
     //@Scheduled(cron = "0 0 21 * * *")
     public void countLoginsAndErrors() throws ParseException {
         log.info("countLoginsAndErrors started");
@@ -105,12 +134,34 @@ public class UserServiceImp implements UserService {
         }
         log.info("countLoginsAndErrors ended");
     }
+    @Override
+    public Map<Date, List<Integer>> graphvalue(String userid) {
 
+        List<Event> events = eventRepository.findAllByEventId_UserId(userid);
+        Map<Date, List<Integer>> result = new TreeMap<>(Comparator.comparing(Date::getTime).reversed());
+        Map<Date, List<Integer>> Fresult = new TreeMap<>(Comparator.comparing(Date::getTime));
 
+        for (Event event : events) {
+            EventId eventId = event.getEventId();
+            Date date = eventId.getDate();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            date = calendar.getTime();
+            Integer count = event.getCount();
 
+            List<Integer> counts = result.getOrDefault(date, new ArrayList<>());
+            counts.add(count);
+            result.put(date, counts);
+        }
+        for (Map.Entry<Date, List<Integer>> entry : result.entrySet()) {
+            if (Fresult.size() <7) {
+                Fresult.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return Fresult;
 
-    ///
-    //NadhirStart
+    }
 
     @Override
     public String getNumeroClient(String idClient) {
@@ -142,6 +193,32 @@ public class UserServiceImp implements UserService {
             return false;
         return true;
     }
+
+
+
+    public void deleteUser(String userId) {
+        keycloak.realm("pidev").users().delete(userId);
+    }
+
+    public List<UserDto> getAllUsers(){
+        List<UserDto> result=new ArrayList<>();
+        List<UserRepresentation> users =  keycloak.realm("pidev").users().list();
+        for (UserRepresentation userRep : users) {
+            if(!userRep.getEmail().equals("systemadmin@mail.com")){
+                UserDto user = new UserDto();
+                user.setId(userRep.getId());
+                user.setFirstName(userRep.getFirstName());
+                user.setLastName(userRep.getLastName());
+                user.setEmail(userRep.getEmail());
+//                user.setAdress(userRep.getAttributes().get("adress").get(0));
+//                user.setPhoneNumber(Integer.valueOf(userRep.getAttributes().get("phoneNumber").get(0)));
+                result.add(user);
+            }
+        }
+
+        return result;
+    }
+
 
     @Override
     public String registerSupplierClient(UserDto userDto) {
@@ -286,7 +363,7 @@ public class UserServiceImp implements UserService {
         updatedUser.setLastName(userDto.getLastName());
         updatedUser.getAttributes().put("image", Arrays.asList((userDto.getImage() != null ? userDto.getImage() :
                 updatedUser.getAttributes().get("image").get(0))));
-        updatedUser.getAttributes().put("phoneNumber", Arrays.asList((userDto.getImage() != null ? String.valueOf(userDto.getPhoneNumber()) :
+        updatedUser.getAttributes().put("phoneNumber", Arrays.asList((String.valueOf(userDto.getPhoneNumber()) != null ? String.valueOf(userDto.getPhoneNumber()) :
                 updatedUser.getAttributes().get("phoneNumber").get(0))));
         updatedUser.getAttributes().put("adress", Arrays.asList((userDto.getAdress() != null ? (userDto.getAdress()) :
                 updatedUser.getAttributes().get("adress").get(0))));
@@ -301,37 +378,27 @@ public class UserServiceImp implements UserService {
         UserRepresentation updatedUser = userResource.toRepresentation();
         updatedUser.setFirstName(userDto.getFirstName());
         updatedUser.setLastName(userDto.getLastName());
-        System.out.println(updatedUser.getFirstName()+updatedUser.getLastName());
         updatedUser.getAttributes().put("image", Arrays.asList((userDto.getImage() != null ? userDto.getImage() :
                 updatedUser.getAttributes().get("image").get(0))));
         updatedUser.getAttributes().put("phoneNumber", Arrays.asList((userDto.getImage() != null ? String.valueOf(userDto.getPhoneNumber()) :
                 updatedUser.getAttributes().get("phoneNumber").get(0))));
-        updatedUser.getAttributes().put("adress", Arrays.asList((userDto.getAdress() != null ? (userDto.getAdress()) :
-                updatedUser.getAttributes().get("adress").get(0))));
-        System.out.println(updatedUser.getAttributes().get("adress").toString());
         userResource.update(updatedUser);
-        System.out.println("updated");
         return updatedUser;
     }
 
 
-    //@Scheduled(fixedRate = 10000)
+    // @Scheduled(fixedRate = 60000)
     public void userIdsWithErrorCountGreaterThan3() {
         log.info("userIdsWithErrorCountGreaterThan3 started");
         //GET EVENTS LIST
         List<EventRepresentation> eventRepresentationList = keycloak.realm("pidev").getEvents();
 
         Map<String, Integer> LOGIN_ERROR_List = new HashMap<>();
-        Map<String, Integer> LOGIN_SUCCESS_List = new HashMap<>();
+
         for (EventRepresentation eventRepresentation : eventRepresentationList) {
             if (eventRepresentation.getType().equals("LOGIN_ERROR")) {
-                System.out.println(eventRepresentation.getDetails());
                 String userId = eventRepresentation.getUserId();
                 LOGIN_ERROR_List.put(userId, LOGIN_ERROR_List.getOrDefault(userId, 0) + 1);
-            }
-            if (eventRepresentation.getType().equals("LOGIN")) {
-                String userId = eventRepresentation.getUserId();
-                LOGIN_SUCCESS_List.put(userId, LOGIN_ERROR_List.getOrDefault(userId, 0) + 1);
             }
         }
 
@@ -343,7 +410,7 @@ public class UserServiceImp implements UserService {
         log.info("userIdsWithErrorCountGreaterThan3 ended");
     }
 
-    //@Scheduled(fixedRate = 10000)
+    //@Scheduled(fixedRate = 60000)
     public void securityCheck() {
         log.info("securityCheck started");
         //GET EVENTS LIST
@@ -366,7 +433,7 @@ public class UserServiceImp implements UserService {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
 
-        //Map<String, Integer> percentageDangerOnAccount = new HashMap<>();
+        Map<String, Integer> percentageDangerOnAccount = new HashMap<>();
         for (Map.Entry<String, Integer> entryLOGIN_ERROR_List : LOGIN_ERROR_List.entrySet()) {
             log.warn("this user " + entryLOGIN_ERROR_List.getKey() + " presents a security risk of : " +
                     df.format(100 * (float) entryLOGIN_ERROR_List.getValue() /
@@ -411,5 +478,4 @@ public class UserServiceImp implements UserService {
             System.out.println("User: " + user.getUsername() + " - Session duration: " + durationString);
         }
     }
-
 }

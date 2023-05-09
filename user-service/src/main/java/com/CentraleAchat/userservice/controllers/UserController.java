@@ -1,8 +1,5 @@
 package com.CentraleAchat.userservice.controllers;
 
-import com.CentraleAchat.userservice.dto.CompanyDto;
-import com.CentraleAchat.userservice.entities.Company;
-import com.CentraleAchat.userservice.services.entitiesService.CompanyService;
 import com.CentraleAchat.userservice.services.utilsService.EmailSenderService;
 import com.CentraleAchat.userservice.dto.UserDto;
 import com.CentraleAchat.userservice.services.entitiesService.UserService;
@@ -14,69 +11,52 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("user")
 @Slf4j
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
     private UserService userService;
     private EmailSenderService emailSenderService;
     private KeycloakService keycloakService;
     private Keycloak keycloak;
-    private CompanyService companyService;
-
-    //front
-
-    @CrossOrigin(origins = "*")
-    @PutMapping("/updateProfile")
-    public ResponseEntity updateProfile(@Valid @RequestBody UserDto userDto) {
-        System.out.println(userDto.toString());
-        return ResponseEntity.status(HttpStatus.OK).body(userService.updateProfile(userDto));
-    }
-
-    @CrossOrigin(origins = "*")
-    @GetMapping("/profile")
-    public ResponseEntity profile() {
-        return ResponseEntity.status(HttpStatus.OK).body(keycloakService.whoAmI());
-    }
-
-    @GetMapping("/getCompany")
-    public CompanyDto getCompany(@RequestParam Long idC) {
-        return companyService.getCompany(idC);
-    }
-
-    @CrossOrigin(origins = "*")
-    @PostMapping("/registerSupplierClient")
-    public ResponseEntity registerSupplierClient( @RequestBody UserDto userDto) {
-        System.out.println("register start");
-
-        String result = userService.registerSupplierClient(userDto);
-        System.out.println(userDto.toString());
-        if (result == "User Already Exist"){
-            System.out.println("exist");
-            return ResponseEntity.unprocessableEntity().body(result);}
-        System.out.println("keycloak");
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
-    }
-
-
-
-    ///
-
-
 
     ///test
-    @GetMapping("/test")
-    public ResponseEntity test() {
-
-        return ResponseEntity.status(HttpStatus.OK).build();
+    @GetMapping("/clear")
+    public void clear() {
+        userService.clearEvent();
     }
-
-    @PostMapping("/sendMail")
-    public ResponseEntity sendMail(@RequestParam String to, @RequestParam String subject, @RequestParam String body) {
+    @GetMapping("/getLoginErrorsForUser/{userid}")
+    public int getLoginErrorsForUser(@PathVariable String userid) {
+        int c=userService.getLoginErrorsForUser(userid);
+        System.out.println(c);
+        return c;
+    }
+    @GetMapping("/graphvalue/{userid}")
+    public Map<Date, List<Integer>> graphvalue(@PathVariable String userid){
+        System.out.println(userService.graphvalue(userid));
+        return userService.graphvalue(userid);
+    }
+    @DeleteMapping("/deleteUser/{userId}")
+    public void deleteUser(@PathVariable String userId) {
+        System.out.println("deleting");
+        userService.deleteUser(userId);
+        System.out.println("deleted");
+    }
+    @GetMapping("/getAllUsers")
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
+    @GetMapping("/sendMail/{to}/{subject}/{body}")
+    public ResponseEntity sendMail(@PathVariable String to, @PathVariable String subject, @PathVariable String body) {
+        System.out.println(to+subject+body);
         emailSenderService.sendSimpleEmail(to, subject, body);
+        System.out.println("mail sent");
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -89,17 +69,21 @@ public class UserController {
 //    public ResponseEntity logout() {
 //        return ResponseEntity.status(HttpStatus.OK).body(KeycloakService.logout(keycloakService.whoAmI()););
 //    }
-
-
-    @GetMapping("/getAllCompany")
-    public List<Company> getAllCompany() {
-        return companyService.getAllCompany();
+    @CrossOrigin(origins = "*")
+    @GetMapping("/profile")
+    public ResponseEntity profile() {
+        return ResponseEntity.status(HttpStatus.OK).body(keycloakService.whoAmI());
     }
-
 
     ///
 
-
+    @PostMapping("/registerSupplierClient")
+    public ResponseEntity registerSupplierClient(@RequestBody UserDto userDto) {
+        String result = userService.registerSupplierClient(userDto);
+        if (result == "User Already Exist")
+            return ResponseEntity.unprocessableEntity().body(result);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
 
     @PostMapping("/addOperatorCourier")
     @RolesAllowed({"SYSTEMADMIN", "SUPPLIER", "ADMIN"})
@@ -110,7 +94,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-
+    @PutMapping("/updateProfile")
+    public ResponseEntity updateProfile(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateProfile(userDto));
+    }
 
     @PutMapping("/updateEmployee")
     public ResponseEntity updateEmployee(@Valid @RequestBody UserDto userDto, @RequestParam String idEmployee) {
@@ -123,9 +110,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/deactivateActivateAccount")
-    public String deactivateActivateAccount(@RequestParam String idUser) {
-        return "Acount activated: " + userService.deactivateActivateAccount(idUser);
+    @GetMapping("/deactivateActivateAccount/{userId}")
+    public String deactivateActivateAccount(@PathVariable String userId) {
+        System.out.println("deactivateActivateAccount");
+        return "Acount activated: " + userService.deactivateActivateAccount(userId);
     }
 
     ///Nadhir start

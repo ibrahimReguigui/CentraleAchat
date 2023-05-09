@@ -1,6 +1,5 @@
 package com.CentraleAchat.userservice.dto;
 
-import com.CentraleAchat.userservice.entities.LineOfBusiness;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -29,7 +28,5 @@ public class CompanyDto {
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
-    @Enumerated(EnumType.STRING)
-    private LineOfBusiness lineOfBusiness;
 
 }
